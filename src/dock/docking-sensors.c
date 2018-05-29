@@ -8,6 +8,7 @@
 #include "sensor/sensor.h"
 #include "dock-avoid.h"
 #include "virtual-wall.h"
+#ifndef AM_DOCKING_METHOD
 
 U8 dock_signals[IR_MAX_RECV];//need to get from core board
 uint32_t dock_signal_get_time;
@@ -596,3 +597,4 @@ U8 robot_get_dock_signals(U8 index)
 
 	return dock_signals[index];
 }
+#endif

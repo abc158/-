@@ -384,6 +384,8 @@ typedef uint32_t (*timer_elapsed_t)(uint32_t milli_start);
     lyy            17.4.28       v1.0         build this function
 ******************************************************************/
 typedef uint64_t (*get_microsecond_t)(void);
+typedef void (*register_ir_ops_t)(void* docking_ops);
+typedef void (*get_dock_api_t)(void *api[], int api_size);
 
 /*±£Áôº¯ÊýÉùÃ÷*/
 typedef int  (*null_fun_t)(int);
@@ -413,6 +415,8 @@ typedef struct
   timer_ms_t        timer_ms;
   timer_elapsed_t   timer_elapsed;
   get_microsecond_t   get_microsecond;
+	register_ir_ops_t register_ir_ops;
+  get_dock_api_t    get_dock_api;
 }syscall_fun;
 
 #endif

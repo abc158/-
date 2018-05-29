@@ -3,7 +3,7 @@
 //  All rights reserved.
 //------------------------------------------------------------------------------
 
-#include "docking-new.h"
+#include DOCKING_NEW_HEADER
 #include "sensor/sensor.h"
 #include "virtual-wall.h"
 #include "ui-ir.h"

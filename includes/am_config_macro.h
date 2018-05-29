@@ -186,5 +186,13 @@ typedef enum
     DOCK_SPEED_LOW   = 70,   /*找到自座后降低的速度*/
     WALLFOLLOW_SPEED = 180  /*沿边清扫的速度*/
 }SPEED_E;
+#define AM_DOCKING_METHOD
+#ifdef AM_DOCKING_METHOD
+#define DOCKING_NEW_HEADER "am-docking-new.h"
+#else
+#define DOCKING_NEW_HEADER "docking-new.h"
+#endif
+		
+#define DOCK_EASY_TEST //for using dockeasy tools
 
 #endif /*end of config*/

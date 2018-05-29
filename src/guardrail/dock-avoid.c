@@ -3,14 +3,13 @@
 //  All rights reserved.
 //------------------------------------------------------------------------------
 
-#include "docking-new.h"
+#include DOCKING_NEW_HEADER
 #include "sensor/sensor.h"
 #include "dock-avoid.h"
 #ifdef IR_WIRELESS
 #include "dock_ir_signal.h"
 #include "wireless/arf2496k.h"
 #endif
-
 #define DOCK_AVOID_SIGNAL_TIME_THRD 500
 #define DOCK_AVOID_SIGNAL_INIT_TIME_THRD 10000
 #define DOCK_AVOID_SIGNAL_ACTIVE(time) (timer_elapsed(time) < DOCK_AVOID_SIGNAL_TIME_THRD)
@@ -34,25 +33,9 @@ void dock_avoid_get_signals(U8 index, U8 signal)
 
 	if ((1 << index) & dock_config->binocular_see_avoid_chan)
 	{
-		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
+		if((signal & DOCK_CLOSE_BEACON == DOCK_CLOSE_BEACON))
 		{
 			dock_avoid_data.binocular_see_avoid_time = timer_ms();
-		}
-	}
-
-	if ((1 << index) & (1 << IR_LOCAL_LEFT))
-	{
-		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
-		{
-			dock_avoid_data.left_see_avoid_time = timer_ms();
-		}
-	}
-
-	if ((1 << index) & (1 << IR_LOCAL_RIGHT))
-	{
-		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
-		{
-			dock_avoid_data.right_see_avoid_time = timer_ms();
 		}
 	}
 

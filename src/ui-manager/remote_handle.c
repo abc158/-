@@ -28,8 +28,8 @@ int ir_gpio[IR_DECODER_MAX] =
 	AM_IO_IR_REC_FRONT_RIGHT,
   AM_IO_IR_REC_CENTER_LEFT,
   AM_IO_IR_REC_CENTER_RIGHT,
-  AM_IO_IR_REC_LEFT,
-  AM_IO_IR_REC_RIGHT,
+//  AM_IO_IR_REC_LEFT,
+//  AM_IO_IR_REC_RIGHT,
   AM_IO_IR_REC_BACK_LEFT,
   AM_IO_IR_REC_BACK_RIGHT,    
 };
@@ -221,7 +221,10 @@ void ir_rx_decode(void)
   U8 state, value;
   U8 index, i;
   int16_t result;
-  
+  #ifdef DOCK_EASY_TEST   
+  extern void dockeasy_check_finish();
+  dockeasy_check_finish();
+	#endif 
   for (index=0; index<IR_DECODER_MAX; index++)
   {
     while (ir_rx_q_empty(index) != 1)
@@ -247,8 +250,16 @@ void ir_rx_decode(void)
           {
             current_ir_code = remote_decode[index].rxByte;//存放遥控器的数据
             remote_timer  = REMOTE_DATA_KEEP_COUNT;
+//            ir_val[index] = remote_decode[index].rxByte;  //存放充电座的信号
+//            ir_val_test[index] = ir_val[index];  
+						#ifndef DOCK_EASY_TEST           
             ir_val[index] = remote_decode[index].rxByte;  //存放充电座的信号
-            ir_val_test[index] = ir_val[index];  
+            ir_val_test[index] = ir_val[index]; 
+						#else
+            extern void dockeasy_print_signal(int index, int signal);
+            dockeasy_print_signal(index, remote_decode[index].rxByte);
+
+						#endif 
           }
           
           #ifdef USE_VIRTUAL_WALL
@@ -264,6 +275,10 @@ void ir_rx_decode(void)
       }
     }
   }
+	#ifdef AM_DOCKING_METHOD
+  void update_beacon_for_irmap(u8 ir[]);
+  update_beacon_for_irmap(ir_val);
+	#endif
 }
 
 /****************************************************************

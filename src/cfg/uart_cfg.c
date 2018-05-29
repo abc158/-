@@ -81,7 +81,12 @@ int debug_uart_handler(int sr, int data)
         }
     	break; 
     case USART_IID_RDA :
-    	uart_in_queue_write((uint8_t)data);
+    	#ifndef DOCK_EASY_TEST
+    	auto_test_rx_handle(data);
+			#else
+        extern void dock_easy_uart_rx_handle(int data);
+        dock_easy_uart_rx_handle(data);
+			#endif
         ret = 0;
     	break;  
     case USART_IID_CTI :

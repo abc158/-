@@ -28,6 +28,9 @@ extern syscall_fun *syscall_irq;
 #define  timer_ms           syscall_irq->timer_ms
 #define  timer_elapsed      syscall_irq->timer_elapsed
 #define  get_microsecond    syscall_irq->get_microsecond
+#define  register_ir_ops    syscall_irq->register_ir_ops
+#define  get_dock_api       syscall_irq->get_dock_api
+
 
 /*!!!!!!!!!!!!!!下面的函数不能在中断上下文使用!!!!!!!!!!!!*/
 /****************************************************************

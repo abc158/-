@@ -8,7 +8,7 @@
 
 #define REMOTE_DATA_KEEP_COUNT  20
 
-#define IR_DECODER_MAX 8
+#define IR_DECODER_MAX 6
 
 typedef enum
 {
@@ -33,7 +33,7 @@ typedef struct
 } REMOTE_DECODE;
 
 
-#define REMOTE_DECODER_MAX 8
+#define REMOTE_DECODER_MAX 6
 
 
 typedef enum{

@@ -9,7 +9,7 @@
 #include "ui-commands.h"
 #include "sensor/sensor.h"
 #include "ui-ir.h"
-#include "docking-new.h"
+#include DOCKING_NEW_HEADER
 #include "charge/charge.h"
 #include "syscall_api.h"
 #include "cfg/adc_chan.h"

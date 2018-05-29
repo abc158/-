@@ -11,7 +11,7 @@
 #endif
 #include "monitor/robot_batter.h"
 #include "motor/robot_brush.h"
-
+#ifndef AM_DOCKING_METHOD
 #define DOCK_NEW_DEBUG
 #ifdef DOCK_NEW_DEBUG
 enum {
@@ -2359,3 +2359,4 @@ void set_dock_new_end(void)
 		dock_core_disable();
 	}
 }
+#endif

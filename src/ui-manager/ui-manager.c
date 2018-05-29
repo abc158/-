@@ -6,7 +6,7 @@
 #include "ui-song-player.h"
 #include "ui-msg-handler.h"
 #include "syscall_api.h"
-#include "docking-new.h"
+#include DOCKING_NEW_HEADER
 #include "dock-avoid.h"
 #include "virtual-wall.h"
 #include "sensor/sensor.h"

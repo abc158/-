@@ -13,7 +13,8 @@
 #include "act.h"
 #include "util/current.h"
 #include "ui-song-player.h"
-#include "docking-new.h"
+#include DOCKING_NEW_HEADER
+
 
 static u16 _battery_low_continue = 0;
 static u16 _battery_cut_continue = 0;
@@ -21,6 +22,14 @@ static u8  _battery_cut_cnt;
 static u16 battery_voltage_dock    = CHARGING_LOW_VOLTAGE;
 static u16 battery_voltage_shutoff = CHARGING_CUTOFF_VOLTAGE;
 extern uint32_t dock_signal_get_time;
+static u8 dock_kidnap_state = 0;
+u8 get_dock_kidnap_state() {
+    return dock_kidnap_state;
+}
+void set_dock_kidnap_state(u8 s) {
+    dock_kidnap_state = s;
+}
+
 /****************************************************************
 *Function   :  robot_docking_kidnap_monitor
 *Author     :  lyy
@@ -97,6 +106,9 @@ void robot_docking_kidnap_monitor(BatteryStatus *battery_status)
               {
                 set_start_docking_state(1);
                 set_dock_leave_dockagain(1);
+								#ifdef AM_DOCKING_METHOD
+            	  set_dock_kidnap_state(1);
+              	#endif
               }
             }
         }
