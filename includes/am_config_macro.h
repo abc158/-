@@ -92,10 +92,10 @@ typedef enum
 /*自座器发出的码值*/
 typedef enum
 {
-  DOCK_FORCE_FIELD = 0xf1,  //圆泡码值
-  DOCK_BUOY_RED    = 0xf4,  //右
-  DOCK_BUOY_GREEN  = 0xf8,  //左 
-  DOCK_BUOY_BOTH   = 0xfc       
+  DOCK_FORCE_FIELD = 0xb1,  //圆泡码值
+  DOCK_BUOY_RED    = 0xb4,  //右
+  DOCK_BUOY_GREEN  = 0xb8,  //左 
+  DOCK_BUOY_BOTH   = 0xbc       
 }DOCK_E;
 
 /*lt bump info*/
