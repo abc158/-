@@ -249,7 +249,6 @@ void ir_rx_decode(void)
             remote_timer  = REMOTE_DATA_KEEP_COUNT;
             ir_val[index] = remote_decode[index].rxByte;  //存放充电座的信号
             ir_val_test[index] = ir_val[index];  
-						printf("%d current_ir_code %x \r\n",index,current_ir_code);
           }
           
           #ifdef USE_VIRTUAL_WALL

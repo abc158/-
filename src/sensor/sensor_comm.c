@@ -83,9 +83,6 @@ void robot_sensor_gather_start(u8 en)
     lyy            17.4.28       v1.0         build this function
 ******************************************************************/
 u8 touch_divide=0x07;
-#ifdef SYS_CHECK
-extern volatile U16 timer2_flag;
-#endif
 extern u8 light_index_on[2];
 extern u8 light_index_off[2];
 long robot_sensor_handler(void)

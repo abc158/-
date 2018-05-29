@@ -11,8 +11,8 @@
 #define WF_SPEED_VALUE 300           //the speed following wall
 #define WF_SPEED_SIGNAl_SMALL 200    //the speed turn to wall to find the signal
 
-#define IR_MIN_VALUE  420//90   //A3: 35
-#define IR_MAX_VALUE  880
+#define IR_MIN_VALUE  820//90   //A3: 35
+#define IR_MAX_VALUE  1580
 
 #define PID_INT_MAX_VAL 800
 #define WF_PID_p 0.001//0.0015,0.002
@@ -26,7 +26,7 @@
 
 #define USE_WF_NOT_CYCLE_PROCESS
 
-#define WF_BACK_TIME   250
+#define WF_BACK_TIME   100
 #define WF_STOP_TIME   50
 #define WF_FRONT_TIME  275
 
@@ -249,6 +249,7 @@ void set_back_away_wall(void)
 void back_away_wall(s16* left_speed, s16* right_speed)
 {
   U32 time_limit;
+	static U16 back_count=0;
 	if(fan_pedestal_back_flag == TRUE)
 		{
 		time_limit=1000;
@@ -257,6 +258,8 @@ void back_away_wall(s16* left_speed, s16* right_speed)
 		{
 		time_limit=WF_BACK_TIME;
 	}
+	if((WfParames_p->robot_bump))
+		back_time = timer_ms();
 	if ((timer_elapsed(back_time) < time_limit))
 	{
 		//*right_speed = -WF_SPEED_VALUE;
@@ -283,6 +286,7 @@ void back_away_wall(s16* left_speed, s16* right_speed)
 
 	else
 	{
+	back_count=0;
 		/*if (timer_elapsed(stop_time) < WF_STOP_TIME)
 		{
 			*right_speed = 0;
@@ -624,7 +628,8 @@ void turn_angle_cal(void)
 		(CLIFF_FRONT_CENTER & cliff_state))
 	{	
 		diff_angle = M_PI_F/3.0f;
-	}else if ((CLIFF_SIDE_LEFT & cliff_state) || (CLIFF_SIDE_RIGHT & cliff_state))
+	}
+	else if ((CLIFF_SIDE_LEFT & cliff_state) || (CLIFF_SIDE_RIGHT & cliff_state))
 	{
 		if (diff_angle <= M_PI_F/6.3f)
 			diff_angle = (between_random(M_PI_F/6.3f, M_PI_F/5.5f));
@@ -683,11 +688,11 @@ void turn_angle_cal(void)
 	}
 	
 }
-s16 ir_value_auto_adj(ir_sensor_data_t sensor_data)
+void ir_value_auto_adj(ir_sensor_data_t sensor_data)
 {
   s16 ir_now_data;
-	BumpState bump_state = get_bump_state();
-	BumpState lt_bump_state = get_touch_bump_state();
+  BumpState bump_state = get_bump_state();
+  BumpState lt_bump_state = get_touch_bump_state();
 //	ir_sensor_data_t sensor_data;
 //	reload_sensor_data(&sensor_data);
   if(WfParames_p->contact_side==AM_LEFT)
@@ -706,7 +711,7 @@ s16 ir_value_auto_adj(ir_sensor_data_t sensor_data)
   if((bump_state)&&(!lt_bump_state))
   {
      wf_g_par.ir_target_value = wf_g_par.ir_adapter_max*PHYSIC_BUMP_ADAPTER_TARGET_VALUE;
-		 wf_g_par.ir_adapter_max = wf_g_par.ir_adapter_max >> 2;
+		 //wf_g_par.ir_adapter_max = wf_g_par.ir_adapter_max >> 2;
   }
   else
   {
@@ -770,11 +775,9 @@ U8 dock_is_near(void)
       }
 			else
 				return 0;
-
   	}
 	else
 		return 0;
-
 }
 void handle_wf_dock(void)
 {
@@ -895,8 +898,9 @@ U8 wf_break_cycing(WfParames_t* wfp_p)
 //      
 int wall_follow_callback(WfParames_t* wfp_p)
 {
-	ir_sensor_data_t sensor_data;
+  ir_sensor_data_t sensor_data;
   //update sensor data
+  BumpState lt_bump_state = get_touch_bump_state();
   reload_sensor_data(&sensor_data);
   WfParames_p=wfp_p;
   ir_value_auto_adj(sensor_data);
@@ -909,24 +913,24 @@ int wall_follow_callback(WfParames_t* wfp_p)
   //process the bump
    if((WfParames_p->robot_bump) && (WfParames_p->cliff_bump == 0))  //cliff has high priority
   {
- 			 handle_wf_bump();
-	   	 if ((WfParames_p->wf_run_state == WF_STAT_FOLLOW) || (WfParames_p->wf_run_state == WF_STAT_TURN))
+ 	   handle_wf_bump();
+		 if ((WfParames_p->wf_run_state == WF_STAT_FOLLOW) || (WfParames_p->wf_run_state == WF_STAT_TURN))
        set_bump_stoping();  //状态切到WF_STAT_STOPING
   }
   //process the cliff
   if(WfParames_p->cliff_bump != 0)
   {
   		handle_wf_cliff();
-			//如果判断到风扇底座的同时又产生cliff 像bump一样做处理
-			if(WfParames_p->robot_bump == 5)
-				 set_bump_stoping();//状态切到WF_STAT_STOPING
-			else
-				 set_away_wall(); //状态切到WF_STAT_TURN
-			return 2;
+		//如果判断到风扇底座的同时又产生cliff 像bump一样做处理
+		if(WfParames_p->robot_bump == 5)
+			 set_bump_stoping();//状态切到WF_STAT_STOPING
+		else
+			 set_away_wall(); //状态切到WF_STAT_TURN
+		return 2;
   }
 	if(dock_is_near())
 	{
-		  set_back_away_wall(); //状态切到WF_STAT_BACK
+		set_back_away_wall(); //状态切到WF_STAT_BACK
 	  	handle_wf_dock();
 	}
   AM_WF_STATE_PRINT("wf state %d\r\n", WfParames_p->wf_run_state);

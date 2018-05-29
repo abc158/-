@@ -2,9 +2,9 @@
 #define __CONFIG_MACRO_H__
 ///////////////////////cliff config///////////////////////
 
-#define USE_UART_WIFI
+//#define USE_UART_WIFI
 #ifdef USE_UART_WIFI
-#define USE_WIFI_DEMO_1
+//#define USE_WIFI_DEMO_1
 //#define USE_WIFI_DEMO_2
 #endif
 typedef enum
@@ -113,9 +113,9 @@ typedef enum
 {
   UI_SET_ROBOT_BUMP_USING_LIGHT_TOUCH = 1,
   UI_SET_LT_ACC_MMPS            = 800,
-  UI_SET_LT_BUMP_THROD          = 200 ,
-  UI_SET_LT_BUMP_LEFT_RIGHT_THROD = 500,
-  UI_SET_LT_MAX_LIGHT_VALUE     = 700,  
+  UI_SET_LT_BUMP_THROD          = 400 ,
+  UI_SET_LT_BUMP_LEFT_RIGHT_THROD = 900,
+  UI_SET_LT_MAX_LIGHT_VALUE     = 1000,  
   UI_SET_LT_BUMP_ACTIVE_DIR     = LT_FRONT_LEFT|LT_FRONT_RIGHT,
 }LT_BUMP_E;
 

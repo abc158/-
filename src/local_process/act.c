@@ -368,7 +368,6 @@ void act_routine(void)
 	//按键消息处理
   if ((key_value != KEY_NULL)&&(charging_jack() == 0))
   {
-	printf("k=%x\r\n",key_value);
     handle_act(key_value);
     board_key = 0;
     ir_key = 0;

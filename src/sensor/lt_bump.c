@@ -204,7 +204,7 @@ int touch_bump_run(void)
           cl_value_max = value_cl;
           cl_decay_count=0;
         }
-        else if((cl_value_max*7/8 > value_cl) || ((value_cl>=UI_SET_LT_MAX_LIGHT_VALUE)) || ((value_cl>=UI_SET_LT_MAX_LIGHT_VALUE*2)))
+        else if((cl_value_max*7/8 > value_cl) || ((value_cl>=UI_SET_LT_MAX_LIGHT_VALUE)))
         {
           cl_decay_count++;
           if((cl_decay_count==(LIGHT_BUMP_DELAY_COUNT+3)))// || (value_l>=DOCK_LIGHT_TOUCH_THROD)) )
@@ -240,7 +240,7 @@ int touch_bump_run(void)
             cr_value_max = value_cr;
             cr_decay_count=0;
           }
-          else if(((cr_value_max*7/8)>value_cr) || ((value_cr >= UI_SET_LT_MAX_LIGHT_VALUE)) || ((value_cr >= UI_SET_LT_MAX_LIGHT_VALUE*2)))
+          else if(((cr_value_max*7/8)>value_cr) || ((value_cr >= UI_SET_LT_MAX_LIGHT_VALUE)))
           {
             cr_decay_count++;
             if(cr_decay_count==(LIGHT_BUMP_DELAY_COUNT+3))// || (value_r>=DOCK_LIGHT_TOUCH_THROD)))

@@ -45,7 +45,7 @@ static uint8_t lt_signal_adjust_enable = 0;
 #ifdef USE_NEW_LT_AUTO_ADJUST
 #define SAME_COUNT  3
 #define LT_VALUE_CHANGE  35
-#define LT_NEW_LT_THOROD_MAX 1000
+#define LT_NEW_LT_THOROD_MAX  3200
 #define STRONG_LINGHT_VALUE   7000  //强光下linght touch on off之和的最小值
 #define LT_ADJ_LENGTH    60     //调整距离单位mm
 #define SPEED_DEVIDE     3      //机器的减速分频比，如果没有设定过默认为3
@@ -296,16 +296,16 @@ void sensor_gather_touch(void)
     }
     break;
   case 1: 
+		SAMPLE_LT_LED();//lt on 
     break;
   case 2:
-    break;	    
-  case 3: 
-    SAMPLE_LT_LED();//lt on 
-    break;
-  case 4:
 		gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF); 
     gpio_set_value(AM_IO_LT_CRCL_LED,SENSOR_LED_OFF); 
 	  gpio_set_value(AM_IO_LT_FRFL_LED,SENSOR_LED_OFF); 
+    break;	    
+  case 3: 
+    break;
+  case 4:
     break;
   case 5:
     break;
@@ -482,10 +482,8 @@ void sensor_handle_touch(void)
   {
   case 0:  
     break;
-  case 1: //calc result 
-    break;
-  case 3:
-    {//lt
+  case 1: 
+      {//lt
           int i = 0;
           if(light_index_on[0] >=4)
           {
@@ -501,7 +499,9 @@ void sensor_handle_touch(void)
                }               
            }
            light_index_on[0]++; 
-    }       
+    }  
+    break;
+  case 3:     
     break;
   case 2:  
     break;
@@ -559,7 +559,7 @@ void sensor_handle_touch(void)
     	for(i = 8;i<=13;i++)
         {   
 #ifdef USE_NEW_LT_AUTO_ADJUST
-//该处理是针对机器本身遮光片的磨损或者进灰导致产生偏差进行aids校准，
+//该处理是针对机器本身遮光片的磨损或者进灰导致产生偏差进行校准，
             s16 temp_data=abs(signal_average_off[i] - signal_average_on[i]); 
             if((signal_average_off[i] + signal_average_on[i])<STRONG_LINGHT_VALUE)
             {
