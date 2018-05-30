@@ -16,6 +16,16 @@
 #define DOCK_AVOID_SIGNAL_INIT_ACTIVE(time) (timer_elapsed(time) < DOCK_AVOID_SIGNAL_INIT_TIME_THRD)
 
 static dock_avoid_data_t dock_avoid_data;
+typedef enum
+{
+  DOCK_AVOID_IR_MID_LEFT,
+  DOCK_AVOID_IR_MID_RIGHT,
+  DOCK_AVOID_IR_LEFT,
+  DOCK_AVOID_IR_RIGHT,
+  DOCK_AVOID_IR_BACK_LEFT,
+  DOCK_AVOID_IR_BACK_RIGHT,
+  DOCK_AVOID_IR_MAX
+}DOCK_AVOID_IR_local;
 
 void dock_avoid_get_signals(U8 index, U8 signal)
 {
@@ -33,9 +43,26 @@ void dock_avoid_get_signals(U8 index, U8 signal)
 
 	if ((1 << index) & dock_config->binocular_see_avoid_chan)
 	{
-		if((signal & DOCK_CLOSE_BEACON == DOCK_CLOSE_BEACON))
+		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
 		{
 			dock_avoid_data.binocular_see_avoid_time = timer_ms();
+		}
+	}
+  	if ((1 << index) & (1 << DOCK_AVOID_IR_LEFT))
+	{
+     
+		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
+		{
+			dock_avoid_data.left_see_avoid_time = timer_ms();
+		}
+	}
+
+	if ((1 << index) & (1 << DOCK_AVOID_IR_RIGHT))
+	{
+      
+		if((signal & DOCK_CLOSE_BEACON) == DOCK_CLOSE_BEACON)
+		{
+			dock_avoid_data.right_see_avoid_time = timer_ms();
 		}
 	}
 

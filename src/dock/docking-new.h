@@ -25,7 +25,6 @@
 
 #define IS_BEACONS_BYTE(b)  ( (( b & (DOCK_CLOSE_BEACON&0xF0) ) == (DOCK_CLOSE_BEACON&0xF0))\
 							&& ( b & 0x0F) )
-
 typedef enum
 {
   IR_LOCAL_MID_LEFT,
@@ -36,7 +35,6 @@ typedef enum
   IR_LOCAL_BACK_RIGHT,
   IR_LOCAL_MAX
 }IR_local_Index;
-
 typedef enum
 {
   DOCKING_BOUNCE,

@@ -193,6 +193,6 @@ typedef enum
 #define DOCKING_NEW_HEADER "docking-new.h"
 #endif
 		
-#define DOCK_EASY_TEST //for using dockeasy tools
+//#define DOCK_EASY_TEST //for using dockeasy tools
 
 #endif /*end of config*/

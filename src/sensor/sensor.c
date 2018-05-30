@@ -130,7 +130,7 @@ volatile s16 signal_delta[IR_SENSOR_NUM]  = {0};
 
 /*lt 控制开关*/
 static u8 lt_onoff_swith = 0;
-
+static u8 wf_lt_onoff_swith = 0;
 /*cliff 控制开关*/
 static u8 cliff_onoff_swith = 0;
 
@@ -290,10 +290,11 @@ void sensor_gather_touch(void)
   case 0:
     if(!lt_onoff_swith)
     {
-      gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_ON); 
       gpio_set_value(AM_IO_LT_CRCL_LED,SENSOR_LED_ON); 
 			gpio_set_value(AM_IO_LT_FRFL_LED,SENSOR_LED_ON); 
     }
+    if(!wf_lt_onoff_swith)
+    gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_ON); 
     break;
   case 1: 
 		SAMPLE_LT_LED();//lt on 
@@ -614,7 +615,8 @@ void sensor_handle_touch(void)
 						{
 							touch_count++;
 							//由于for里会循环6次所以乘以一个6
-							if(touch_count*LT_run_time<=1500*6)
+							//if(touch_count*LT_run_time<=1500*6)
+              if((left_speed+right_speed)<20)
 								{
 									offset_sum[i-8]+=temp_data;
 									offset_count[i-8]++;
@@ -743,7 +745,14 @@ void set_lighttouch_enable(u8 en)
 {
   lt_onoff_swith = en;
 }
-
+void set_wf_lighttouch_enable(u8 en)
+{
+  wf_lt_onoff_swith = en;
+}
+u8 get_wf_lighttouch_enable(void)
+{
+  return wf_lt_onoff_swith;
+}
 void set_cliff_enable(u8 en)
 {
   cliff_onoff_swith = en;

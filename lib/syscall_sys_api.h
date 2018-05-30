@@ -484,4 +484,40 @@ EXPORT void rate_gyro_init(void);
 ******************************************************************/
 EXPORT void set_robot_default_accel(int accel);
 
+/****************************************************************
+*Function   :  afio_exit
+*Author     :  lyy    
+*Date       :  2018.1.3
+*Description:  释放afio
+*CallBy     :  
+*Input      :  afio_t
+*Output     :  无
+*Return     :  无
+*Others     :  
+*History    : //修改历史
+    <author>       <time>      <version>           <desc>
+    lyy            17.8.31       v1.0         build this function
+******************************************************************/
+EXPORT unsigned char afio_exit(afio_t *);
+
+/****************************************************************
+*Function   :  afio_cfg
+*Author     :  lyy    
+*Date       :  2018.1.3
+*Description:  配置afio
+*CallBy     :  
+*Input      :  afio_t
+*Output     :  无
+*Return     :  无
+*Others     :  
+*History    : //修改历史
+    <author>       <time>      <version>           <desc>
+    lyy            17.10.26       v1.0         build this function
+******************************************************************/
+EXPORT unsigned char afio_cfg(afio_t *);
+
+EXPORT void gpio_init(int gpioNum, int dir,int pr_mode);
+
+EXPORT int check_other_phread_is_normal(void);
+
 #endif

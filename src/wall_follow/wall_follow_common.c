@@ -56,7 +56,7 @@
 WfParames_t* WfParames_p;
 U8 fan_pedestal_turn_flag=FALSE;
 U8 fan_pedestal_back_flag=FALSE;
-
+extern void set_lighttouch_enable(u8 en);
 
 
 #define UTIL_CLIFF_MASK 0x1
@@ -538,10 +538,10 @@ void follow_wall_run(s16* left_speed, s16* right_speed, ir_sensor_data_t* sensor
 
   wf_g_par.ex_ir_error=ir_error;
 }
-
 int wall_follow_start(AM_LeftRight contact_side, WfParames_t* wfp_p)
 {
   WfParames_p=wfp_p;
+  set_lighttouch_enable(1);
   if(WfParames_p->wf_run_state != WF_STAT_STOP && WfParames_p->contact_side==contact_side)
   {
         AM_WF_DEBUG_PRINT("wf already run:%d\r\n", WfParames_p->contact_side);
@@ -563,7 +563,7 @@ int wall_follow_start(AM_LeftRight contact_side, WfParames_t* wfp_p)
   wf_g_par.ir_adapter_max = 0;
   wfp_p->wf_following_sig=FALSE;
   AM_WF_DEBUG_PRINT("app wf s\r\n");
-  //when state is not stop, and contact_side is different, what should do?
+  //when state is not , and contact_side is different, what should do?
 #ifdef USE_WF_NOT_CYCLE_PROCESS
   if(wf_turn_array_p==NULL)
   {
@@ -583,6 +583,7 @@ int wall_follow_start(AM_LeftRight contact_side, WfParames_t* wfp_p)
 void wall_follow_stop(WfParames_t* wfp_p)
 {
 	WfParames_p=wfp_p;
+  set_lighttouch_enable(0);
   if(WfParames_p->wf_run_state != WF_STAT_STOP)
   {
     WfParames_p->wf_run_state=WF_STAT_STOP;

@@ -16,39 +16,6 @@
 #define EXPORT extern
 
 /*!!!!!!!!!!!!!!下面的函数不能在中断上下文使用!!!!!!!!!!!!*/
-
-/****************************************************************
-*Function   :  lock_irq
-*Author     :  lyy    
-*Date       :  2017.4.20
-*Description:  锁中断
-*CallBy     :  任何地方，除了中断上下文外
-*Input      :  无
-*Output     :  无
-*Return     :  无
-*Others     :  一般不建议随便调用，因为会影响系统整体性能
-*History    : //修改历史
-    <author>       <time>      <version>           <desc>
-    lyy            17.4.28       v1.0         build this function
-******************************************************************/ 
-EXPORT uint16_t lock_irq(void);
-
-/****************************************************************
-*Function   :  unlock_irq
-*Author     :  lyy    
-*Date       :  2017.4.20
-*Description:  解除锁中断
-*CallBy     :  任何地方，除了中断上下文外
-*Input      :  无
-*Output     :  无
-*Return     :  无
-*Others     :  一般不建议随便调用，因为会影响系统整体性能
-*History    : //修改历史
-    <author>       <time>      <version>           <desc>
-    lyy            17.4.28       v1.0         build this function
-******************************************************************/ 
-EXPORT uint16_t unlock_irq(void);
-
 /****************************************************************
 *Function   :  pthread_create
 *Author     :  lyy    

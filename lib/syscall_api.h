@@ -8,7 +8,7 @@
 #include "motor/motor.h"
 #include "irq_syscall.h"
 #include "hal_amicro_gpio.h"
-//#include "afio.h"
+#include "afio.h"
 //#include "am_robot_type.h"
 //#include "docking-core.h"
 #include "adc_chan.h"

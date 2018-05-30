@@ -384,12 +384,39 @@ typedef uint32_t (*timer_elapsed_t)(uint32_t milli_start);
     lyy            17.4.28       v1.0         build this function
 ******************************************************************/
 typedef uint64_t (*get_microsecond_t)(void);
+/****************************************************************
+*Function   :  lock_irq
+*Author     :  lyy    
+*Date       :  2017.4.20
+*Description:  锁中断
+*CallBy     :  任何地方，除了中断上下文外
+*Input      :  无
+*Output     :  无
+*Return     :  无
+*Others     :  一般不建议随便调用，因为会影响系统整体性能
+*History    : //修改历史
+    <author>       <time>      <version>           <desc>
+    lyy            17.4.28       v1.0         build this function
+******************************************************************/ 
+typedef uint16_t (*lock_irq_t)(void);
+
+/****************************************************************
+*Function   :  unlock_irq
+*Author     :  lyy    
+*Date       :  2017.4.20
+*Description:  解除锁中断
+*CallBy     :  任何地方，除了中断上下文外
+*Input      :  无
+*Output     :  无
+*Return     :  无
+*Others     :  一般不建议随便调用，因为会影响系统整体性能
+*History    : //修改历史
+    <author>       <time>      <version>           <desc>
+    lyy            17.4.28       v1.0         build this function
+******************************************************************/ 
+typedef uint16_t (*unlock_irq_t)(void);
 typedef void (*register_ir_ops_t)(void* docking_ops);
 typedef void (*get_dock_api_t)(void *api[], int api_size);
-
-/*保留函数声明*/
-typedef int  (*null_fun_t)(int);
-/*下面函数可以在任何时候使用，提供如下函数主要是因为中断里不能使用系统调用函数，而中断里有需要访问如下功能的函数*/
 typedef struct
 {
   io_request        gpio_request;
@@ -414,8 +441,10 @@ typedef struct
   close_t           close;
   timer_ms_t        timer_ms;
   timer_elapsed_t   timer_elapsed;
-  get_microsecond_t   get_microsecond;
-	register_ir_ops_t register_ir_ops;
+  get_microsecond_t get_microsecond;
+  lock_irq_t        lock_irq;
+  unlock_irq_t      unlock_irq;
+  register_ir_ops_t register_ir_ops;
   get_dock_api_t    get_dock_api;
 }syscall_fun;
 

@@ -249,6 +249,7 @@ void ir_rx_decode(void)
           if ((result == 0)&&(remote_decode[index].rxByte != 0))
           {
             current_ir_code = remote_decode[index].rxByte;//存放遥控器的数据
+         //   printf("%d current_ir_code %x\r\n",index,current_ir_code);
             remote_timer  = REMOTE_DATA_KEEP_COUNT;
 //            ir_val[index] = remote_decode[index].rxByte;  //存放充电座的信号
 //            ir_val_test[index] = ir_val[index];  
@@ -257,8 +258,8 @@ void ir_rx_decode(void)
             ir_val_test[index] = ir_val[index]; 
 						#else
             extern void dockeasy_print_signal(int index, int signal);
-            dockeasy_print_signal(index, remote_decode[index].rxByte);
-
+          //  dockeasy_print_signal(index, remote_decode[index].rxByte);
+       
 						#endif 
           }
           
