@@ -56,7 +56,7 @@
 WfParames_t* WfParames_p;
 U8 fan_pedestal_turn_flag=FALSE;
 U8 fan_pedestal_back_flag=FALSE;
-
+extern void set_lighttouch_enable(u8 en);
 
 
 #define UTIL_CLIFF_MASK 0x1
@@ -542,6 +542,7 @@ void follow_wall_run(s16* left_speed, s16* right_speed, ir_sensor_data_t* sensor
 int wall_follow_start(AM_LeftRight contact_side, WfParames_t* wfp_p)
 {
   WfParames_p=wfp_p;
+  set_lighttouch_enable(1);
   if(WfParames_p->wf_run_state != WF_STAT_STOP && WfParames_p->contact_side==contact_side)
   {
         AM_WF_DEBUG_PRINT("wf already run:%d\r\n", WfParames_p->contact_side);
@@ -583,6 +584,7 @@ int wall_follow_start(AM_LeftRight contact_side, WfParames_t* wfp_p)
 void wall_follow_stop(WfParames_t* wfp_p)
 {
 	WfParames_p=wfp_p;
+  set_lighttouch_enable(0);
   if(WfParames_p->wf_run_state != WF_STAT_STOP)
   {
     WfParames_p->wf_run_state=WF_STAT_STOP;
