@@ -100,22 +100,7 @@ long robot_sensor_handler(void)
     sensor_gather_cliff();
     sensor_handle_cliff();
     hal_isr();
-    if(dock_is_enable())
-    {
-      if(devide_flag!=1)
-      {
-        timer_divide=2;
-        touch_divide=0x1f;
-        devide_flag=1;
-        for(U8 i=0;i<2;i++)
-        {
-          light_index_on[i]=0;
-          light_index_off[i]=0;
-        }
-        time_4khz_counter_touch=0;
-      }
-    }
-    else if(wall_follow_is_running())
+    if(wall_follow_is_running())
     {
       if(devide_flag!=2)
         {
@@ -129,6 +114,21 @@ long robot_sensor_handler(void)
           }
           time_4khz_counter_touch=0;
         }
+    }
+     else if(dock_is_enable())
+    {
+      if(devide_flag!=1)
+      {
+        timer_divide=2;
+        touch_divide=0x1f;
+        devide_flag=1;
+        for(U8 i=0;i<2;i++)
+        {
+          light_index_on[i]=0;
+          light_index_off[i]=0;
+        }
+        time_4khz_counter_touch=0;
+      }
     }
     else 
     {

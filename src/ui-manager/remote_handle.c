@@ -258,7 +258,7 @@ void ir_rx_decode(void)
             ir_val_test[index] = ir_val[index]; 
 						#else
             extern void dockeasy_print_signal(int index, int signal);
-          //  dockeasy_print_signal(index, remote_decode[index].rxByte);
+            dockeasy_print_signal(index, remote_decode[index].rxByte);
        
 						#endif 
           }
