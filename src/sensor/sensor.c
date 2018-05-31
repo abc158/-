@@ -298,11 +298,11 @@ void sensor_gather_touch(void)
     break;
   case 1: 
 		SAMPLE_LT_LED();//lt on 
-    break;
-  case 2:
-		gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF); 
+    gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF); 
     gpio_set_value(AM_IO_LT_CRCL_LED,SENSOR_LED_OFF); 
 	  gpio_set_value(AM_IO_LT_FRFL_LED,SENSOR_LED_OFF); 
+    break;
+  case 2:
     break;	    
   case 3: 
     break;
@@ -615,8 +615,8 @@ void sensor_handle_touch(void)
 						{
 							touch_count++;
 							//由于for里会循环6次所以乘以一个6
-							//if(touch_count*LT_run_time<=1500*6)
-              if((left_speed+right_speed)<20)
+							if(touch_count*LT_run_time<=1500*6)
+              //if(((left_speed+right_speed)<20))
 								{
 									offset_sum[i-8]+=temp_data;
 									offset_count[i-8]++;
