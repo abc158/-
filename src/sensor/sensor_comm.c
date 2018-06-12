@@ -104,8 +104,8 @@ long robot_sensor_handler(void)
     {
       if(devide_flag!=2)
         {
-          timer_divide=1;
-          touch_divide=0x07;
+          timer_divide=2;
+          touch_divide=0x0f;
           devide_flag=2;
           for(U8 i=0;i<2;i++)
           {

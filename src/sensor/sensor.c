@@ -45,7 +45,7 @@ static uint8_t lt_signal_adjust_enable = 0;
 #ifdef USE_NEW_LT_AUTO_ADJUST
 #define SAME_COUNT  3
 #define LT_VALUE_CHANGE  35
-#define LT_NEW_LT_THOROD_MAX  3200
+//#define LT_NEW_LT_THOROD_MAX  3200
 #define STRONG_LINGHT_VALUE   7000  //强光下linght touch on off之和的最小值
 #define LT_ADJ_LENGTH    60     //调整距离单位mm
 #define SPEED_DEVIDE     3      //机器的减速分频比，如果没有设定过默认为3
@@ -62,6 +62,14 @@ static U32 LT_run_time_start=0;
 U16 LT_adj_time;
 static U16 touch_count=0;
 static U8 LT_touch_init_flag=0;
+#define LT_MAX_THOROD_LEFT        		500
+#define LT_MAX_THOROD_RIGHT 					500
+#define LT_MAX_THOROD_CENTERLEFT 		 	2500
+#define LT_MAX_THOROD_CENTERRIGHT 		2500
+#define LT_MAX_THOROD_FRONTLEFT   		3200
+#define LT_MAX_THOROD_FRONTRIGHT  		3200
+static U16 lt_max_thorod[6]={LT_MAX_THOROD_CENTERRIGHT,LT_MAX_THOROD_FRONTLEFT,\
+LT_MAX_THOROD_RIGHT,LT_MAX_THOROD_LEFT,LT_MAX_THOROD_FRONTRIGHT,LT_MAX_THOROD_CENTERLEFT};
 #endif
 
 typedef struct
@@ -566,7 +574,7 @@ void sensor_handle_touch(void)
             {
                 continue;
             }
-            if((go_straight_flag==1)&&(temp_data<=LT_NEW_LT_THOROD_MAX))
+            if((go_straight_flag==1)&&(temp_data<=lt_max_thorod[i-8]))
             {
               if(lt_adj_time[i-8]==0)
               {

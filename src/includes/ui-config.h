@@ -108,7 +108,7 @@ typedef struct
     S16 i_value;                      // I_VALUE
     S16 d_value;                      // D_VALUE
     U16 hardware_version;             // HARDWARE_VERSION  
-    U16 rev1;   
+    U16 rank_width;                   //单位:mm
     U16 rev2;   
     U16 rev3;
     U16 rev4;    
@@ -182,8 +182,10 @@ typedef struct
       U32 ltBumpNoBack     :1; /*, 配置lt bump时，机器是否需要先后退在转弯，0：后退, 1；不后退*/
       U32 gyro_dir         :2; /* */	  
       U32 wall_follow_dir  :2; /*0: left and right, 1:left, 2:right*/
-      U32 rev7             :2; /*，ON:open, OFF:close*/
-      U32 rev8             :16;
+      U32 path_type        :2; /*，碰撞的转弯姿态， 0:default 1:90度弓字型*/
+      U32 acc_dir          :2;
+      U32 slope            :1;
+      U32 rev1             :13;
     }bits;
     U32 funs;
   }clean_fun;  

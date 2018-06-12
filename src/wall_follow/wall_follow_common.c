@@ -56,6 +56,7 @@
 WfParames_t* WfParames_p;
 U8 fan_pedestal_turn_flag=FALSE;
 U8 fan_pedestal_back_flag=FALSE;
+U8 first_dock_turn=0;
 extern void set_lighttouch_enable(u8 en);
 
 
@@ -329,6 +330,7 @@ void turn_away_wall(s16* left_speed, s16* right_speed)
 	}
 	else
 	{
+		first_dock_turn=0;
 		set_follow_wall();
 		diff_angle = 0.0;
 		AM_WF_STATE_PRINT("turn_angle %f,\r\n", get_gyro_radian());
@@ -785,6 +787,7 @@ void handle_wf_dock(void)
   	static u32 dock_signal_stp=0;
         if(timer_elapsed(dock_signal_stp)>13000)
         {
+          first_dock_turn=1;
           if(WfParames_p->contact_side==AM_LEFT)
           {
             wf_g_par.turn_target_angle = get_gyro_radian() - M_PI_F/2.1f;
@@ -929,9 +932,9 @@ int wall_follow_callback(WfParames_t* wfp_p)
 			 set_away_wall(); //×´Ì¬ÇĞµ½WF_STAT_TURN
 		return 2;
   }
-	if(dock_is_near())
+	if(dock_is_near()&&(!first_dock_turn))
 	{
-		set_back_away_wall(); //×´Ì¬ÇĞµ½WF_STAT_BACK
+		  set_back_away_wall(); //×´Ì¬ÇĞµ½WF_STAT_BACK
 	  	handle_wf_dock();
 	}
   AM_WF_STATE_PRINT("wf state %d\r\n", WfParames_p->wf_run_state);

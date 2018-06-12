@@ -199,15 +199,15 @@ int touch_bump_run(void)
       if((value_cl >= UI_SET_LT_BUMP_LEFT_RIGHT_THROD) && (timer_elapsed(cl_time_stp)>TOTCH_BUMP_TIME_DELAY))
       {
         //printf("value_cl = %d\r\n",value_cl);
-        if(((cl_value_max < value_cl)) && (value_cl<UI_SET_LT_MAX_LIGHT_VALUE))// || ((cl_value_max + cl_value_max>>3) < value_cl))
+        if(((cl_value_max < value_cl)) && (value_cl<UI_SET_LT_MAX_LIGHT_VALUE))
         {
           cl_value_max = value_cl;
           cl_decay_count=0;
         }
-        else if((cl_value_max*7/8 > value_cl) || ((value_cl>=UI_SET_LT_MAX_LIGHT_VALUE)))
+        else if((cl_value_max*7/8 > value_cl) || ((value_cl>=UI_SET_LT_BUMP_LEFT_RIGHT_THROD)))
         {
           cl_decay_count++;
-          if((cl_decay_count==(LIGHT_BUMP_DELAY_COUNT+3)))// || (value_l>=DOCK_LIGHT_TOUCH_THROD)) )
+          if((cl_decay_count==(LIGHT_BUMP_DELAY_COUNT+3)))
           {
             if(touch_bump_onoff==FALSE)
             {
@@ -240,10 +240,10 @@ int touch_bump_run(void)
             cr_value_max = value_cr;
             cr_decay_count=0;
           }
-          else if(((cr_value_max*7/8)>value_cr) || ((value_cr >= UI_SET_LT_MAX_LIGHT_VALUE)))
+          else if(((cr_value_max*7/8)>value_cr) || ((value_cr >= UI_SET_LT_BUMP_LEFT_RIGHT_THROD)))
           {
             cr_decay_count++;
-            if(cr_decay_count==(LIGHT_BUMP_DELAY_COUNT+3))// || (value_r>=DOCK_LIGHT_TOUCH_THROD)))
+            if(cr_decay_count==(LIGHT_BUMP_DELAY_COUNT+3))
             {
               if(touch_bump_onoff==FALSE)
               {

@@ -153,7 +153,7 @@ void main_app_task(void *arg)
   UI_STATE_E s;
   while(1)
   {  
-// print_debug_lt_auto();
+ //print_debug_lt_auto();
     {
       key_routine();
       remote_routine();

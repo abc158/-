@@ -90,6 +90,7 @@ static const ui_config_t ui_config_default =
     .i_value = I_VALUE,
     .d_value = D_VALUE,
     .hardware_version = HARDWARE_VERSION,
+    .rank_width = 200,
     .changed = 0,
   },
   .speed_config =
@@ -143,8 +144,9 @@ static const ui_config_t ui_config_default =
     .clean_fun.bits.lt_type      = 0,//如果有远近两组lt的话填写 1
     .clean_fun.bits.rear_cliff   = 0,//如果模组后面有cliff，填 1 
     .clean_fun.bits.ltBumpNoBack = 1,//lt bump后，机器是否先后退再转弯。 一般如果轮子不在模具的中间，则不适宜打开。
-    .clean_fun.bits.gyro_dir     = 0,//陀螺仪方向
+    .clean_fun.bits.gyro_dir     = 0,//陀螺仪方向，表示芯片有字那面是朝天花板还是朝地面，0表示朝天花板，1表示朝地面
     .clean_fun.bits.wall_follow_dir = 0, //0: left and right, 1:left, 2:right
+    .clean_fun.bits.path_type = 0,      //碰撞的转弯姿态， 0:default 1:90度弓字型
   }
   
 };

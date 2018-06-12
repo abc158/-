@@ -216,8 +216,8 @@ u8 ext_act_handle(U32 key)
   }
   else
   {
-    robot_sensor_gather_start(1);
-   // robot_sensor_gather_start(0);
+    //robot_sensor_gather_start(1);
+    robot_sensor_gather_start(0);
   }  
   //停止状态一段时间后进入睡眠
   if ((sys_state_info_p.robot_state == ROBOT_STATE_WAITING)||
