@@ -16,7 +16,17 @@ extern BOOLEAN check_docking_go_forward(void);
 extern BOOLEAN check_docking_left(void);
 extern U8 robot_get_dock_signals(U8 index);
 
-extern Debouncer_Data recently_signal;
+extern BOOLEAN check_recently_right_centerright(void);
+extern BOOLEAN check_recently_left_centerright(void);
+extern BOOLEAN check_recently_left_centerleft(void);
+extern BOOLEAN check_recently_right_centerleft(void);
+extern BOOLEAN check_recently_right_right(void);
+extern BOOLEAN check_recently_left_left(void);
+extern BOOLEAN check_recently_right_backright(void);
+extern BOOLEAN check_recently_left_backleft(void);
+
+
+
 extern Debouncer_Data recently_near_dock;
 extern Debouncer_Data recently_near_dock_1;
 extern Debouncer_Data recently_docking_left;
@@ -27,22 +37,25 @@ extern Debouncer_Data recently_left_backleft;
 extern Debouncer_Data recently_right_backright;
 extern Debouncer_Data recently_right_backleft;
 extern Debouncer_Data recently_left_backright;
-extern Debouncer_Data recently_docking_go_forward_right;
-extern Debouncer_Data recently_docking_go_forward_left;
-extern Debouncer_Data recently_docking_go_forward_onlyright;
-extern Debouncer_Data recently_docking_go_forward_onlyleft;
-extern Debouncer_Data recently_docking_go_forward;
-extern Debouncer_Data recently_force_field;
-extern Debouncer_Data recently_no_force_field;
 extern Debouncer_Data recently_center_left_focus;
 extern Debouncer_Data recently_center_right_focus;
-extern Debouncer_Data recently_follow_left_force_field;
-extern Debouncer_Data recently_follow_right_force_field;
-extern Debouncer_Data recently_left_near_dock;
-extern Debouncer_Data recently_right_near_dock;
 extern Debouncer_Data recently_left_right;
 extern Debouncer_Data recently_right_left;
-extern Debouncer_Data recently_force_field_middle;
 extern Debouncer_Data recently_bump;
+extern Debouncer_Data recently_right_centerright;
+extern Debouncer_Data recently_right_centerleft;
+extern Debouncer_Data recently_left_centerleft;
+extern Debouncer_Data recently_left_centerright;
+extern Debouncer_Data recently_docking_left_midright;
+extern Debouncer_Data recently_docking_right_midright;
+extern Debouncer_Data recently_docking_left_midleft;
+extern Debouncer_Data recently_docking_right_midleft;
+extern Debouncer_Data recently_force_field_right;
+extern Debouncer_Data recently_force_field_left;
+extern Debouncer_Data recently_force_field_midright;
+extern Debouncer_Data recently_force_field_midleft;
+extern Debouncer_Data recently_force_field_centerright;
+extern Debouncer_Data recently_force_field_centerleft;
+
 
 #endif //_DOCKING_NEW_H_

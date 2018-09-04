@@ -11,7 +11,7 @@
 #define WF_SPEED_VALUE 300           //the speed following wall
 #define WF_SPEED_SIGNAl_SMALL 200    //the speed turn to wall to find the signal
 
-#define IR_MIN_VALUE  820//90   //A3: 35
+#define IR_MIN_VALUE  620//90   //A3: 35
 #define IR_MAX_VALUE  1580
 
 #define PID_INT_MAX_VAL 800
@@ -22,7 +22,7 @@
 #define TURN_COUNT_MAX 255  //150    //when no signal, inner speed is 1/5, after this time, speed set to zero, if 255, no such function
 
 #define PHYSIC_BUMP_ADAPTER_TARGET_VALUE     2/5//1/3  //when detect physic bump, max ir value plus this value
-#define NO_PHYSIC_BUMP_ADAPTER_TARGET_VALUE  6/7//5/6  //when detect no physic bump, max ir value plus this value
+#define NO_PHYSIC_BUMP_ADAPTER_TARGET_VALUE  2/3//5/6  //when detect no physic bump, max ir value plus this value
 
 #define USE_WF_NOT_CYCLE_PROCESS
 

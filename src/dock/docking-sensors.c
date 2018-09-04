@@ -42,16 +42,16 @@ BOOLEAN buoy_right(IR_local_Index chan)
 
 BOOLEAN check_near_dock(void)
 {
-	return (((force_field(IR_LOCAL_MID_RIGHT)) || (force_field(IR_LOCAL_MID_LEFT)) || \
-		(force_field(IR_LOCAL_LEFT)) || (force_field(IR_LOCAL_RIGHT)) || \
-		(force_field(IR_LOCAL_BACK_RIGHT)) || (force_field(IR_LOCAL_BACK_LEFT))) || \
-		(recently_docking_go_forward_onlyright.current_state && recently_docking_go_forward_onlyleft.current_state));
+	return ((force_field(IR_LOCAL_MID_RIGHT)) || (force_field(IR_LOCAL_MID_LEFT)) || \
+		(force_field(IR_LOCAL_LEFT)) || (force_field(IR_LOCAL_RIGHT)) || (force_field(IR_LOCAL_CENTER_LEFT))||\
+		(force_field(IR_LOCAL_CENTER_RIGHT))||(force_field(IR_LOCAL_BACK_RIGHT)) || (force_field(IR_LOCAL_BACK_LEFT)));
 }
 
 BOOLEAN check_near_dock_1(void)
 {
-	return (((force_field(IR_LOCAL_MID_RIGHT)) || (force_field(IR_LOCAL_MID_LEFT)) || \
-		(force_field(IR_LOCAL_LEFT)) || (force_field(IR_LOCAL_RIGHT))));
+	return ((force_field(IR_LOCAL_MID_RIGHT)) || (force_field(IR_LOCAL_MID_LEFT)) || \
+		(force_field(IR_LOCAL_CENTER_LEFT))||(force_field(IR_LOCAL_CENTER_RIGHT))||\
+		(force_field(IR_LOCAL_LEFT))||(force_field(IR_LOCAL_RIGHT)));
 }
 
 BOOLEAN check_left_near_dock(void)
@@ -137,6 +137,24 @@ BOOLEAN check_signal(void)
 	else
 		return FALSE;
 }
+BOOLEAN check_recently_left_midleft(void)
+{
+	return (buoy_left(IR_LOCAL_MID_LEFT));
+}
+
+BOOLEAN check_recently_right_midright(void)
+{
+	return (buoy_right(IR_LOCAL_MID_RIGHT));
+}
+BOOLEAN check_recently_right_midleft(void)
+{
+	return (buoy_right(IR_LOCAL_MID_LEFT));
+}
+
+BOOLEAN check_recently_left_midright(void)
+{
+	return (buoy_left(IR_LOCAL_MID_RIGHT));
+}
 
 BOOLEAN check_recently_left_left(void)
 {
@@ -146,6 +164,25 @@ BOOLEAN check_recently_left_left(void)
 BOOLEAN check_recently_right_right(void)
 {
 	return (buoy_right(IR_LOCAL_RIGHT));
+}
+
+BOOLEAN check_recently_right_centerright(void)
+{
+	return (buoy_right(IR_LOCAL_CENTER_RIGHT));
+}
+
+BOOLEAN check_recently_right_centerleft(void)
+{
+	return (buoy_right(IR_LOCAL_CENTER_LEFT));
+}
+
+BOOLEAN check_recently_left_centerleft(void)
+{
+	return (buoy_left(IR_LOCAL_CENTER_LEFT));
+}
+BOOLEAN check_recently_left_centerright(void)
+{
+	return (buoy_left(IR_LOCAL_CENTER_RIGHT));
 }
 
 BOOLEAN check_recently_left_right(void)
@@ -188,14 +225,32 @@ BOOLEAN check_recently_force_field(void)
 	return recently_near_dock_1.current_state;
 }
 
-BOOLEAN check_recently_follow_right_force_field(void)
+BOOLEAN check_recently_right_force_field(void)
 {
 	return ((force_field(IR_LOCAL_RIGHT)));
 }
 
-BOOLEAN check_recently_follow_left_force_field(void)
+BOOLEAN check_recently_left_force_field(void)
 {
 	return ((force_field(IR_LOCAL_LEFT)));
+}
+BOOLEAN check_recently_centerright_force_field(void)
+{
+	return ((force_field(IR_LOCAL_CENTER_RIGHT)));
+}
+
+BOOLEAN check_recently_centerleft_force_field(void)
+{
+	return ((force_field(IR_LOCAL_CENTER_LEFT)));
+}
+BOOLEAN check_recently_midright_force_field(void)
+{
+	return ((force_field(IR_LOCAL_MID_RIGHT)));
+}
+
+BOOLEAN check_recently_midleft_force_field(void)
+{
+	return ((force_field(IR_LOCAL_MID_LEFT)));
 }
 
 BOOLEAN check_recently_center_left_focus(void)
@@ -240,14 +295,6 @@ BOOLEAN check_docking_go_forward_onlyleft(void)
 		return FALSE;
 }
 
-BOOLEAN check_docking_go_forward(void)
-{
-	if ((recently_docking_go_forward_right.current_state && recently_docking_go_forward_left.current_state) || \
-		(recently_docking_go_forward_onlyright.current_state && recently_docking_go_forward_onlyleft.current_state))
-		return TRUE;
-	else
-		return FALSE;
-}
 
 BOOLEAN check_docking_left(void)
 {
@@ -297,15 +344,6 @@ void set_near_dock_context(BOOLEAN value)
 	return;
 }
 
-Debouncer_Data recently_signal = {
-	.predicate = &check_signal,
-	.trigger_on = 1,
-	.trigger_off = 2000,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
 
 Debouncer_Data recently_near_dock = {
 	.predicate = &check_near_dock,
@@ -320,27 +358,7 @@ Debouncer_Data recently_near_dock = {
 Debouncer_Data recently_near_dock_1 = {
 	.predicate = &check_near_dock_1,
 	.trigger_on = 1,
-	.trigger_off = 10,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_left_near_dock = {
-	.predicate = &check_left_near_dock,
-	.trigger_on = 1,
-	.trigger_off = 100,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_right_near_dock = {
-	.predicate = &check_right_near_dock,
-	.trigger_on = 1,
-	.trigger_off = 100,
+	.trigger_off = 50,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
@@ -366,51 +384,40 @@ Debouncer_Data recently_center_right_focus = {
 	.current_state = FALSE,
 	.set_dock_context = NULL
 };
-
-Debouncer_Data recently_docking_go_forward_right = {
-	.predicate = &check_docking_go_forward_right,
+	
+Debouncer_Data recently_docking_left_midleft = {
+	.predicate = &check_recently_left_midleft,
 	.trigger_on = 1,
-	.trigger_off = 5,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_docking_right_midleft = {
+	.predicate = &check_recently_right_midleft,
+	.trigger_on = 1,
+	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
 	.set_dock_context = NULL
 };
 
-Debouncer_Data recently_docking_go_forward_left = {
-	.predicate = &check_docking_go_forward_left,
+Debouncer_Data recently_docking_right_midright = {
+	.predicate = &check_recently_right_midright,
 	.trigger_on = 1,
-	.trigger_off = 5,
+	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
 	.set_dock_context = NULL
 };
 
-Debouncer_Data recently_docking_go_forward_onlyright = {
-	.predicate = &check_docking_go_forward_onlyright,
+Debouncer_Data recently_docking_left_midright = {
+	.predicate = &check_recently_left_midright,
 	.trigger_on = 1,
-	.trigger_off = 10,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_docking_go_forward_onlyleft = {
-	.predicate = &check_docking_go_forward_onlyleft,
-	.trigger_on = 1,
-	.trigger_off = 10,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_docking_go_forward = {
-	.predicate = &check_docking_go_forward,
-	.trigger_on = 1,
-	.trigger_off = 15,
+	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
@@ -420,7 +427,7 @@ Debouncer_Data recently_docking_go_forward = {
 Debouncer_Data recently_docking_left = {
 	.predicate = &check_docking_left,
 	.trigger_on = 1,
-	.trigger_off = 40,
+	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
@@ -430,7 +437,7 @@ Debouncer_Data recently_docking_left = {
 Debouncer_Data recently_docking_right = {
 	.predicate = &check_docking_right,
 	.trigger_on = 1,
-	.trigger_off = 40,
+	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
@@ -440,7 +447,7 @@ Debouncer_Data recently_docking_right = {
 Debouncer_Data recently_left_left = {
 	.predicate = &check_recently_left_left,
 	.trigger_on = 1,
-	.trigger_off = 20,
+	.trigger_off = 50,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
@@ -450,12 +457,52 @@ Debouncer_Data recently_left_left = {
 Debouncer_Data recently_right_right = {
 	.predicate = &check_recently_right_right,
 	.trigger_on = 1,
+	.trigger_off = 50,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_right_centerright = {
+		.predicate = &check_recently_right_centerright,
+		.trigger_on = 1,
+		.trigger_off = 20,
+		.on_count = 0,
+		.off_count = 0,
+		.current_state = FALSE,
+		.set_dock_context = NULL
+	};
+
+Debouncer_Data recently_right_centerleft = {
+	.predicate = &check_recently_right_centerleft,
+	.trigger_on = 1,
 	.trigger_off = 20,
 	.on_count = 0,
 	.off_count = 0,
 	.current_state = FALSE,
 	.set_dock_context = NULL
 };
+
+Debouncer_Data recently_left_centerleft = {
+		.predicate = &check_recently_left_centerleft,
+		.trigger_on = 1,
+		.trigger_off = 20,
+		.on_count = 0,
+		.off_count = 0,
+		.current_state = FALSE,
+		.set_dock_context = NULL
+	};
+
+Debouncer_Data recently_left_centerright = {
+	.predicate = &check_recently_left_centerright,
+	.trigger_on = 1,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+
 
 Debouncer_Data recently_left_backleft = {
 	.predicate = &check_recently_left_backleft,
@@ -516,39 +563,8 @@ Debouncer_Data recently_right_left = {
 	.current_state = FALSE,
 	.set_dock_context = NULL
 };
-
-Debouncer_Data recently_force_field_middle = {
-	.predicate = &check_recently_force_field_middle,
-	.trigger_on = 1,
-	.trigger_off = 10,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_force_field = {
-	.predicate = &check_recently_force_field,
-	.trigger_on = 11,
-	.trigger_off = 1,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_no_force_field = {
-	.predicate = &check_docking_go_forward,
-	.trigger_on = 1,
-	.trigger_off = 200,
-	.on_count = 0,
-	.off_count = 0,
-	.current_state = FALSE,
-	.set_dock_context = NULL
-};
-
-Debouncer_Data recently_follow_right_force_field = {
-	.predicate = &check_recently_follow_right_force_field,
+Debouncer_Data recently_force_field_right = {
+	.predicate = &check_recently_right_force_field,
 	.trigger_on = 1,
 	.trigger_off = 20,
 	.on_count = 0,
@@ -557,8 +573,44 @@ Debouncer_Data recently_follow_right_force_field = {
 	.set_dock_context = NULL
 };
 
-Debouncer_Data recently_follow_left_force_field = {
-	.predicate = &check_recently_follow_left_force_field,
+Debouncer_Data recently_force_field_left = {
+	.predicate = &check_recently_left_force_field,
+	.trigger_on = 1,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_force_field_midright = {
+	.predicate = &check_recently_midright_force_field,
+	.trigger_on = 1,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_force_field_midleft = {
+	.predicate = &check_recently_midleft_force_field,
+	.trigger_on = 1,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_force_field_centerright = {
+	.predicate = &check_recently_centerright_force_field,
+	.trigger_on = 1,
+	.trigger_off = 20,
+	.on_count = 0,
+	.off_count = 0,
+	.current_state = FALSE,
+	.set_dock_context = NULL
+};
+Debouncer_Data recently_force_field_centerleft = {
+	.predicate = &check_recently_centerleft_force_field,
 	.trigger_on = 1,
 	.trigger_off = 20,
 	.on_count = 0,
@@ -588,7 +640,8 @@ U8 robot_get_dock_signals(U8 index)
 	if (dock_signals[index] != 0)
 	{
 		dprintf(DEBUG_DOCK_SIGNAL, "IR%d : %x \r\n", index, dock_signals[index]);
-                
+		//if((dock_signals[index]&0xB1)==0xB1)
+    printf("%d IR %x\r\n",index, dock_signals[index]);            
                 dock_signal_get_time=timer_ms();
 		dock_avoid_get_signals(index, dock_signals[index]);
 		virtual_wall_get_signals(index, dock_signals[index]);

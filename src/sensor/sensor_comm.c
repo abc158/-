@@ -105,7 +105,7 @@ long robot_sensor_handler(void)
       if(devide_flag!=1)
       {
         timer_divide=1;
-        touch_divide=0x07;
+        touch_divide=0x3f;
         devide_flag=1;
         for(U8 i=0;i<2;i++)
         {
@@ -120,7 +120,7 @@ long robot_sensor_handler(void)
       if(devide_flag!=2)
       {
         timer_divide=1;
-        touch_divide=0x07;
+        touch_divide=0x1f;
         devide_flag=2;
         for(U8 i=0;i<2;i++)
         {

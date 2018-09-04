@@ -133,6 +133,34 @@ static u8 lt_onoff_swith = 0;
 static u8 wf_lt_onoff_swith = 0;
 /*cliff 控制开关*/
 static u8 cliff_onoff_swith = 0;
+void touch_data_led_on_filter(U8 index,U16 data)
+{
+	  signal_average_on[index]=0;
+		for(U8 i=0;i<3;i++)
+			{
+    		 signal_queue_on[index][i]=signal_queue_on[index][i+1];
+			}
+		signal_queue_on[index][3]=data;
+    for(U8 i = 0; i<4; i++)
+     {
+      signal_average_on[index] += signal_queue_on[index][i]; 
+     }
+}
+
+
+void touch_data_led_off_filter(U8 index,S16 data)
+{
+	signal_average_off[index]=0;
+	for(U8 i=0;i<3;i++)
+		{
+			 signal_queue_off[index][i]=signal_queue_off[index][i+1];
+		}
+	signal_queue_off[index][3]=data;
+	for(U8 i = 0; i<4; i++)
+	 {
+		 signal_average_off[index] += signal_queue_off[index][i]; 
+	 }
+}
 
 /****************************************************************
 *Function   :  sensor_threshold_update
@@ -297,12 +325,12 @@ void sensor_gather_touch(void)
     gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_ON); 
     break;
   case 1: 
-		SAMPLE_LT_LED();//lt on 
-    break;
-  case 2:
+		SAMPLE_LT_LED();//lt on
 		gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF); 
     gpio_set_value(AM_IO_LT_CRCL_LED,SENSOR_LED_OFF); 
 	  gpio_set_value(AM_IO_LT_FRFL_LED,SENSOR_LED_OFF); 
+    break;
+  case 2:
     break;	    
   case 3: 
     break;
@@ -492,12 +520,14 @@ void sensor_handle_touch(void)
           }          
            for(i=8;i<=13;i++) 
            {
-               signal_average_on[i] = 0;
-               signal_queue_on[i][light_index_on[0]] = (adcCache[remap[i].phy_chan] & 0x00000fff);
-               for(int j = 0; j<4; j++)
-               {               
-                 signal_average_on[i] += signal_queue_on[i][j]; 
-               }               
+//               signal_average_on[i] = 0;
+//               signal_queue_on[i][light_index_on[0]] = (adcCache[remap[i].phy_chan] & 0x00000fff);
+//               for(int j = 0; j<4; j++)
+//               {               
+//                 signal_average_on[i] += signal_queue_on[i][j]; 
+//               }         
+					 U16 temp = (adcCache[remap[i].phy_chan] & 0x00000fff);
+					 touch_data_led_on_filter(i,temp);
            }
            light_index_on[0]++; 
     }  
@@ -515,19 +545,21 @@ void sensor_handle_touch(void)
           }          
            for(i=8;i<=13;i++) 
            {
-               signal_average_off[i] = 0;
-               signal_queue_off[i][light_index_off[0]] = (adcCache[remap[i].phy_chan] & 0x00000fff);
-               for(int j = 0; j<4; j++)
-               {
-                 signal_average_off[i] += signal_queue_off[i][j]; 
-               }
+//               signal_average_off[i] = 0;
+//               signal_queue_off[i][light_index_off[0]] = (adcCache[remap[i].phy_chan] & 0x00000fff);
+//               for(int j = 0; j<4; j++)
+//               {
+//                 signal_average_off[i] += signal_queue_off[i][j]; 
+//               }
+					 U16 temp = (adcCache[remap[i].phy_chan] & 0x00000fff);
+					 touch_data_led_off_filter(i,temp);
            }
            light_index_off[0]++; 
     }
   
     break;
   case 7://calc result    
-    if(light_index_off[0] >=4 && light_index_on[0]>=4)
+    //if(light_index_off[0] >=4 && light_index_on[0]>=4)
     {
     	u8 lt = 0;
         u8 i = 0;
@@ -587,19 +619,20 @@ void sensor_handle_touch(void)
 									if(lt_same_count[i-8]>SAME_COUNT)
                   {
                   		lt_same_count[i-8]=0;
-                      signal_offset[i-8]=((signal_offset_ex[i-8]>temp_data)? temp_data:signal_offset_ex[i-8]);
-											offset_count[i-8]++;
-											offset_sum[i-8]+=signal_offset[i-8];
-											offset_average[i-8]=offset_sum[i-8]/offset_count[i-8];
-											if((offset_average[i-8]<signal_offset[i-8]))
-												{
-												signal_offset[i-8]=offset_average[i-8];
-												}
-											if(offset_count[i-8]>1000)
-												{
-												offset_count[i-8]=1;
-												offset_sum[i-8]=signal_offset[i-8];
-												}
+//                      signal_offset[i-8]=((signal_offset_ex[i-8]>temp_data)? temp_data:signal_offset_ex[i-8]);
+//											offset_count[i-8]++;
+//											offset_sum[i-8]+=signal_offset[i-8];
+//											offset_average[i-8]=offset_sum[i-8]/offset_count[i-8];
+//											if((offset_average[i-8]<signal_offset[i-8]))
+//												{
+//												signal_offset[i-8]=offset_average[i-8];
+//												}
+//											if(offset_count[i-8]>1000)
+//												{
+//												offset_count[i-8]=1;
+//												offset_sum[i-8]=signal_offset[i-8];
+//												}
+											signal_offset[i-8]=((signal_offset_ex[i-8]>temp_data)? temp_data:signal_offset_ex[i-8]);
 											lt_debug_count=1;
                   }
               }
@@ -615,8 +648,7 @@ void sensor_handle_touch(void)
 						{
 							touch_count++;
 							//由于for里会循环6次所以乘以一个6
-							//if(touch_count*LT_run_time<=1500*6)
-              if((left_speed+right_speed)<20)
+							if(touch_count*LT_run_time<=1500*6)
 								{
 									offset_sum[i-8]+=temp_data;
 									offset_count[i-8]++;
@@ -689,7 +721,7 @@ void sensor_handle_touch(void)
 ******************************************************************/
 void robot_close_sensor_led(void)
 {
-    gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF); //luyanjin   
+    gpio_set_value(AM_IO_LT_RL_LED,SENSOR_LED_OFF);
     gpio_set_value(AM_IO_LT_CRCL_LED,SENSOR_LED_OFF); 
 	  gpio_set_value(AM_IO_LT_FRFL_LED,SENSOR_LED_OFF); 
 		gpio_set_value(AM_IO_CLIFF_LED,SENSOR_LED_OFF);
