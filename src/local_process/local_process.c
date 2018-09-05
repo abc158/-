@@ -158,12 +158,16 @@ void main_app_task(void *arg)
       key_routine();
       remote_routine();
       #if defined(USE_UART_WIFI)
-      #if defined(USE_WIFI_DEMO_1)
-      WifiData_Period_Process();
-      #elif defined(USE_WIFI_DEMO_2)
-      uart_server_routine();
-      #endif     
-      wifi_uart_cmd_rounte();
+			#if defined(USE_WIFI_DEMO_1)
+		  WifiData_Period_Process();//处理wifi数据
+			#elif defined(USE_WIFI_DEMO_2)
+			uart_server_routine();//数据接收解析
+		  sendTask();//数据发送
+			#endif
+				
+			#ifdef USE_UART_WIFI
+			wifi_uart_cmd_rounte();
+			#endif
       #endif
       
     } 
@@ -185,9 +189,6 @@ void main_app_task(void *arg)
         self_test_routine();
       }
       ui_handle_idle(); 
-      #if defined(USE_WIFI_DEMO_2)
-      map_data_process();
-      #endif
     }
     feed_watchdog();
     sleep(1);

@@ -21,6 +21,8 @@ static u8  _battery_cut_cnt;
 static u16 battery_voltage_dock    = CHARGING_LOW_VOLTAGE;
 static u16 battery_voltage_shutoff = CHARGING_CUTOFF_VOLTAGE;
 extern uint32_t dock_signal_get_time;
+u8 low_batt_flag = 0;
+
 /****************************************************************
 *Function   :  robot_docking_kidnap_monitor
 *Author     :  lyy
@@ -98,6 +100,7 @@ void robot_docking_kidnap_monitor(BatteryStatus *battery_status)
                 set_start_docking_state(1);
                 set_dock_leave_dockagain(1);
               }
+							low_batt_flag=1;
             }
         }
         else

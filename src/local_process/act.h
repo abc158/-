@@ -14,6 +14,11 @@ typedef enum
     UI_FULLGO
 }UI_STATE_E;
 
+typedef enum
+{
+  SYS_STATE_CHANGE_OK,/*系统状态已经切换完毕*/
+  SYS_STATE_CHANGE_ING,/*系统状态正在切换*/
+}SYS_STATE_CHG_E;
 
 
 
@@ -35,4 +40,11 @@ void state_recover(void);
 u8 get_robot_current_state(void);
 extern u8 get_save_state(void);
 extern void set_save_state(u8 s);
+extern u8 get_water_step(void);
+extern void set_water_step(u8 val);
+extern u8 get_electricity_drop_flag(void);
+extern U16 wetmop_detect(void);
+extern u8 get_vac_state(void);
+
+
 #endif

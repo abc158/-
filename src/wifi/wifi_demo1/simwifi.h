@@ -28,49 +28,73 @@
 #define UART_CMD_ACK_WAIT         1     //ACK WAIT
 #define UART_CMD_ACK_ERR          2     //ACK ERROR
 //*******
-#define  WaitRX                                 0X00   //接收状
-#define  PinResetWifiCard                       0X01   //ResetPin,复位WifiCard
-//********
-#define  TestConnectivity                       0X02
-#define  TestConnectivityAck                    0X03
-//*******
-#define  ParaSaveToWifiE2ROM                    0X04
-#define  ParaSaveToWifiE2ROMAck                 0X05
-//*******
-#define  DefaultIdle                            0X06   //空闲状
-#define  ReadFromAPPKeySig                      0X07
-#define  ReadFromAPPKeySigAck                   0X08
-#define  WriteToAPPDisplay                      0X09
-#define  WriteToAPPDispalyAck                   0X0A
-//********
-#define  RestoreFactorySet                      0X0B
-#define  RestoreFactorySetAck                   0X0C
+#define  WaitRX                                 0X01   //接收状
+
+#define  DefaultIdle                            0X00   //空闲状
+#define  PinResetWifiCard                       0X02   //ResetPin,复位WifiCard
+
 
 //*********************************************
-#define  NullTestFunCode        0X00
-#define  ReadMemFunCode         0X01
-#define  WriteMemFunCode        0X02
-#define  WriteMemEEROMFunCode   0X03     //写RAM,且存入EEROM
-#define  EnReadMemFunCode       0X05    //带事件应答读 
-#define  EnWriteMemFunCode      0X06   //带事件应答写 
-#define  WReadMemFunCode        0X07    //参数化写带读功能 
-#define  WriteRMemFunCode       0X08   // 写带读功能 
 
-#define  NullTestAckCode       (NullTestFunCode|0X80)
-#define  ReadMemAckCode        (ReadMemFunCode|0X80)
-#define  WriteMemAckCode       (WriteMemFunCode|0X80)
-#define  WriteMemEEROMAckCode  (WriteMemEEROMFunCode|0X80)
-#define  EnReadMemAckCode      (EnReadMemFunCode|0X80)
-#define  EnWriteMemAckCode     (EnWriteMemFunCode|0X80)
-#define  WReadMemAckCode       (WReadMemFunCode|0X80)
-#define  WriteRMemAckCode      (WriteRMemFunCode|0X80)
+//--Eden code start------
+
+#define S_WAIT_DEL_BOND_ACK 3
+#define S_WAIT_TX_MAP_DAT_ACK 4
+#define S_WAIT_TX_STAT_DAT_ACK 5
+#define S_WAIT_FACTOR_TEST_ACK 6
+#define S_WAIT_SET_NET_ACK 7
+#define S_WAIT_RECV_STAT 13
+
+
+
+#define S_TX_DEL_BOND 8
+#define S_TX_MAP_DAT  9
+#define S_TX_STAT_DAT 10
+#define S_TX_FACTOR_TEST 11
+#define S_TX_SET_NET 12
+#define S_TX_MODULE_STAT 14
+
+
+
+
+
+
+#define TxMapDatAckCode         0x14              //等待地图数据发送后的ACK
+
+#define TxStatDatAckCode 0x14//等待状态数据发送后的ACK
+#define TxFactorTestCmdAckCode   0x33
+#define TxSetNetCmdAckCode        0X13
+#define TxWaitForStat            0x23
+
+#define TxMapDatFuncCode         0x02       //等待地图数据发送后的ACK
+
+#define TxStatDatFuncCode        0x01       //等待状态数据发送后的ACK
+#define TxFactorTestCmdFuncCode:   0x03
+#define TxSetNetCmdFuncCode        0X03     
+
+//状态机定义
+
+
+
+
+//--Eden code end --------
+
+
+//#define  NullTestAckCode       (NullTestFunCode|0X80)
+//#define  ReadMemAckCode        (ReadMemFunCode|0X80)
+//#define  WriteMemAckCode       (WriteMemFunCode|0X80)
+//#define  WriteMemEEROMAckCode  (WriteMemEEROMFunCode|0X80)
+//#define  EnReadMemAckCode      (EnReadMemFunCode|0X80)
+//#define  EnWriteMemAckCode     (EnWriteMemFunCode|0X80)
+//#define  WReadMemAckCode       (WReadMemFunCode|0X80)
+//#define  WriteRMemAckCode      (WriteRMemFunCode|0X80)
 
 #define  UartCmdFinOK          0X00   //=0X00,操作完成
 #define  UartCmdFinErr1        0X01   //=0X01,操作无效区
 #define  UartCmdFinErr3        0X03   //=0X03,操作未知错
-
+#ifdef USE_WIFI_DEMO_1
 #define UART_CMD_MAX 13
-
+#endif
 
 							
 
@@ -101,7 +125,6 @@ extern u16 sys_uart_trig_tx_evnet(u16 uart_index);
 extern void WifiData_Period_Process(void);
 extern void UART_Config_PinResetWifiCard(void);
 extern void IRQ_Usart1RxData_Process(uint8_t value);
-//extern U16 get_Value_HeaterPower(void);
 extern void set_wifi_enable(uint8_t value);
 extern uint8_t get_wifi_enable_state(void);
 extern void set_reset_wifi_flag(uint8_t value);
@@ -110,6 +133,7 @@ extern void exit_wifi(void);
 extern void init_wifi_module(void);
 extern void powerup_wifi_module(void);
 extern U8 get_bat_level(void);
+extern uint16_t calCheckSum(uint8_t * p_data, uint16_t len);
 //********************
 
 //**********************

@@ -5,8 +5,8 @@
 //#define  gzsdebug                   //辅助调试
 //#define  gzsdebugOut
 #define  FULL_FAST_RUN               //尽可能快速读取，及响应APP按键信号
-#define  UART_BAUD_RATE    115200  // 9600 //串口波特率 
-#define  APP_COM_NUM       0X03EC //一个工程项目(for 一种电器设备)===有单独APP组件号
+#define  UART_BAUD_RATE_WIFI02    115200  // 9600 //串口波特率 
+#define  APP_COM_NUM              0X03EC  //一个工程项目(for 一种电器设备)===有单独APP组件号
 //#define  WAITING_TIMEOUT_COUNTER__MAXVAL        3000     //40*20ms=800ms==0.8S 等待NEXT WORKING 计数器
 #define  WAITING_TIMEOUT_COUNTER__MAXVAL          3  
 //#define  WAITING_TIMEOUT_COUNTER__MAXVAL          80
@@ -20,7 +20,7 @@
 #define PROTOCOL_TYPE    0x01F5
 #define REV              0x0
 
-#define UART_TX_BUF_SIZE 100
+#define UART_TX_BUF_SIZE 100  // 100
 
 
 typedef struct
@@ -48,8 +48,16 @@ typedef enum
   CMD_WIFI_STATE        = 0x05, //WIFI网络状态查询
   CMD_GET_ROBOT_STATE   = 0x06, //云平台状态查询,即查询扫地机当前的状态
   CMD_CONFIG_NETWORK    = 0x07, //配网命令
-  CMD_ENTER_TEST        = 0x09, //进入厂测模式
-}WIFI_CMD_E;
+  CMD_UART_RESET    	= 0x08, //UART初始化
+  CMD_ENTER_TEST        = 0x0A, //进入厂测模式
+}RecvStateType;
+typedef enum
+{
+    SEND_NONE_CMD       = 0,
+    SEND_DEVICE_MAP,
+    SEND_DEVICE_MAP_RESEND,
+    SEND_DEVICE_STATE,
+} SendStateType;
 
 typedef enum
 {
@@ -62,16 +70,11 @@ typedef enum
 
 typedef enum
 {
-  WIFI_WAIT_CONNECT    = 0x1,
-  WIFI_CONNECTING      = 0x2,
-  WIFI_CONNECT_OK      = 0x3,
+  WIFI_WAIT_CONNECT    	= 0x0,
+  WIFI_CONNECTING      	= 0x1,
+  WIFI_CONNECT_OK      	= 0x2,
+  WIFI_CONNECT_TO_ROUTER =0x3,
 }WIFI_STATE_E;
-
-#define UART_CMD_MAX 13
-
-
-							
-
 
 
 
@@ -96,13 +99,16 @@ extern uint8_t get_wifi_enable_state(void);
 extern void set_reset_wifi_flag(uint8_t value);
 extern uint8_t get_reset_wifi_flag(void);
 extern void set_wifi_state(uint8_t value);
-extern uint8_t get_wifi_state(void);
+extern WIFI_STATE_E get_wifi_state(void);
+extern  void sendTask(void);
 extern void exit_wifi(void);
 extern U8 send_pack(U8 cmd, U8 *data_buf, U8 datalen);
-extern void map_data_process(void);
+extern void map_data_process(u8 flag);
 extern U8 uart_server_routine(void);
 extern void wifi_init(void);
 extern void wifi_handle_sleep(void);
+extern U8 get_bat_level(void);
+
 //********************
 
 //**********************

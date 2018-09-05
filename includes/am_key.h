@@ -45,6 +45,7 @@ typedef enum
     KEY_MODE         = 0X00800000,
     KEY_GRID         = 0X01000000,
     KEY_ADJUST       = 0X02000000,
+    KEY_ADJUST1      = 0X04000000,
     KEY_RESERVED_MAX = 0x80000000
 }key_val_e;
 

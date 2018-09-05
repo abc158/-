@@ -992,4 +992,12 @@ U16 charging_dock(void)
   //return (gpio_get_value(IO_CHARGER_LOW)==0);
 }
 
+u8 get_charging_mode(void)
+{
+	if(charging_dock())
+		return 0;
+	else if(charging_jack())
+		return 1;
+}
+
 

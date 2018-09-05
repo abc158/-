@@ -2,10 +2,10 @@
 #define __CONFIG_MACRO_H__
 ///////////////////////cliff config///////////////////////
 
-//#define USE_UART_WIFI
+#define USE_UART_WIFI
 #ifdef USE_UART_WIFI
 //#define USE_WIFI_DEMO_1
-//#define USE_WIFI_DEMO_2
+#define USE_WIFI_DEMO_2
 #endif
 typedef enum
 {  

@@ -57,6 +57,7 @@ typedef struct
 #define AM_IO_RESET_WIFI          GPIOD(9)
 #define AM_IO_WIFI_WAKE_UP        GPIOD(12)
 #define AM_I0_WATER_TANK_DETECT   GPIOB(7)
+#define AM_IO_BUSTBIN_DETECT      0xff
 
 /*下面中不使用的IO 口配置为0xff，lyy*/
 #define ROBOT_IODEF(m)                                             \

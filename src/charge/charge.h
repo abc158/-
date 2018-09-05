@@ -123,4 +123,5 @@ U16 charging_dock(void);
 s16 convert_to_voltage( s16 v_adc);
 s16 convert_to_current( s16 c_adc);
 S16 charge_current_get(void);
+u8 get_charging_mode(void);
 #endif

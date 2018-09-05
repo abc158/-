@@ -67,10 +67,12 @@ static U8 remote_state;
 #endif
 u8 direction_key_up_flag;//方向键松开标志位
 u8 state_save =0;
-
+SYS_STATE_CHG_E sys_state_4_wifi = SYS_STATE_CHANGE_OK;//
 static U8 adjust_side_brush_flag = 0;
 static U8 wifi_flag = 0;
 extern TEST_CMD_E test_item_table[];
+BOOLEAN  state_changed = FALSE;   //  TRUE : 系统状态有改变，或产生机器错误
+u8 wifi_sound_flag = 0;
 
 void handle_act(U32 key_val);
 extern cmd_state_t *get_ui_uart_cmd_state(void);
@@ -82,6 +84,75 @@ extern void start_watchdog();
 #if defined(USE_UART_WIFI)
 	static U8 wifi_press_long_flag = 0;
 #endif
+
+
+u8 vacc_enhanced_flag = 0;
+u8 vac_state = 0;//初始状态正常状态
+u16 reset_low_batt_flag_cnt = 0;
+extern u8 low_batt_flag;
+//0代表关闭1低档2正常档3高档
+u8 water_step = 0;//水箱档位标志
+u8 get_water_step(void){
+	return water_step;
+}
+void set_water_step(u8 val){
+	water_step = val;
+}
+u8 electricity_drop_flag = 0;//0表示只能下降，1表示只能上升
+void set_electricity_drop_flag(u8 flag){
+	electricity_drop_flag = flag;
+}
+u8 get_electricity_drop_flag(void){
+	return electricity_drop_flag;
+}
+U8 wetmop_flag=0;
+
+U16 wetmop_detect(void)
+{
+  u8 dec_cnt = 0;
+  u8 i = 0;
+	
+  for (i=0; i<10; i++)
+  {
+    if(!gpio_get_value(AM_IO_BUSTBIN_DETECT))
+    {
+      dec_cnt++;
+    }
+  }
+  if (dec_cnt >= 6)
+  {
+  	if(wetmop_flag==0){//初始化水箱放水档位为正常档
+		set_water_step(2);
+	}
+    wetmop_flag = 1;//有水箱
+    return 1;
+  }
+  else
+  {
+    wetmop_flag = 0;//无水箱
+    set_water_step(0);//无水箱时候还原水箱档位为关闭
+    return 0;
+  }
+}
+void set_vac_satte(u8 state){
+  vac_state = state;
+  if (state == 1)
+  {
+    vacc_enhanced_flag = 1;  
+    //robot_suction_vols_set(VACUUM_ENHANCE_VOLTAGE);
+  }
+  else
+  {
+    vacc_enhanced_flag = 0;  
+    //robot_suction_vols_set(VACUUM_NORMAL_VOLTAGE);
+  }
+  printf("set vac=%d, robot_state=%d \r\n", state, sys_state_info_p.robot_state);
+}
+u8 get_vac_state(void){
+	//0正常，1强力
+	return vac_state;
+}
+
 UI_STATE_E get_ui_state(void)
 {
   return ui_state;
@@ -260,7 +331,19 @@ u8 ext_act_handle(U32 key)
 	{
 		act_command_q(CMD_PAUSE, CMD_STOP, NULL, 0); 	
 	}
-	
+	if ((sys_state_info_p.robot_state != ROBOT_STATE_DOCK) && (1 == low_batt_flag))
+        {
+          reset_low_batt_flag_cnt++;
+          if (reset_low_batt_flag_cnt >= 100)
+          {
+            low_batt_flag = 0;
+            reset_low_batt_flag_cnt = 0;
+          }
+        }
+        else
+        {
+          reset_low_batt_flag_cnt = 0;
+        }
     if(sys_state_info_p.robot_state == ROBOT_STATE_DOCK)
     {
         if(adjust_side_brush_flag == 0)
@@ -1157,6 +1240,28 @@ void handle_act_common(U32 key_val)
        wifi_press_long_flag = 0;
       #endif 
        break;
+		case KEY_CLEAN | KEY_LONG:
+	   #ifdef USE_UART_WIFI 
+	 //放置进入整机测试时候出发配网
+	   //if(wifi_press_long_flag == 0)
+	   {
+	   
+	       printf("ENTER WIFI CONFIG!!\r\n");
+	       #ifdef USE_WIFI_DEMO_1
+	       InsertExtCmd(RestoreFactorySet); //进入wifi配网模式
+	       set_reset_wifi_flag(1);
+	       #elif defined(USE_WIFI_DEMO_2)
+	        send_config_network_cmd(); //进入wifi配网模式
+	       #endif
+	       songplayer_play_id(VOICE_ID_BUTTON_CLICK, 0);//叮咚
+	       //songplayer_play_id(SONG_ID_WIFI_CONNECTING, 0);
+	   waiting_state_cnt = 0;
+	       wifi_press_long_flag = 1;
+	       wifi_flag = 1;
+	   wifi_sound_flag = 1;
+	   }
+	   #endif
+	   break; 
     default:
     	break;
   }
@@ -1178,16 +1283,16 @@ void handle_act(U32 key_val)
 
 	if ((key_val == (KEY_CLEAN | KEY_HOLD)) && allow_self_test && board_key) 
 	{
-	  set_ui_state(UI_TEST);
-	  allow_self_test = 0;
-	  ui_test_cmd = test_item_table[ui_test_index];
+//	  set_ui_state(UI_TEST);
+//	  allow_self_test = 0;
+//	  ui_test_cmd = test_item_table[ui_test_index];
 	  printf("enter self test\r\n"); 
 	}
 	if ((key_val == (KEY_CLEAN | KEY_HOLD)) && allow_self_test && ir_key) 
 	{
-	  set_ui_state(UI_FULLGO);
-	  allow_self_test = 0;
-	  fullgo_cnt = FULLGO_START_TIME;
+//	  set_ui_state(UI_FULLGO);
+//	  allow_self_test = 0;
+//	  fullgo_cnt = FULLGO_START_TIME;
 	  printf("enter fullgo\r\n"); 
 	}
 	

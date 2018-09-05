@@ -137,7 +137,6 @@ int wifi_uart_handler(int sr, int data)
   return 0;
   //return ret;
 }
-
 void sys_uart_cfg(void)
 {
   //UserDmaInit_t   UserDmaInit;
@@ -179,7 +178,6 @@ void sys_uart_cfg(void)
   UserUartInit.UartMode.DmaMode          = 0;//DMA_RX_MODE;//1:rx  0:tx,rx 2:tx 
   UserUartInit.UartMode.RxTxEna          = UART_RXTX;//tx,rx
  // uart_init(wifi_uart_id, &UserUartInit);
-  
   ioctl(uart_wifi,UART_INIT, &UserUartInit); 
   request_irq(uart_wifi, (long)wifi_uart_handler,0);
   #endif

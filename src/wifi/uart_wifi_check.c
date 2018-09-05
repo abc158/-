@@ -11,7 +11,7 @@
 #include "ui-commands.h"
 #include "display.h"
 
-#if defined(USE_WIFI_DEMO_1)
+#ifdef USE_WIFI_DEMO_1
 #include "wifi_demo1/simwifi.h"
 #elif defined(USE_WIFI_DEMO_2)
 #include "wifi_demo2/simwifi_demo2.h"
@@ -34,8 +34,12 @@ static cmd_state_t wifi_uart_cmd_state[UART_CMD_MAX]=
     {KEY_NULL, UART_QUIT,        KEY_POWER},
     {KEY_NULL, UART_POWER_ON,    KEY_POWER},
     {KEY_NULL, UART_POWER_DOWN,  KEY_POWER},
-    {KEY_NULL, UART_WALL_FOLLOW, KEY_WALLFLOW},
-    {KEY_NULL, UART_ENHANCE,     KEY_WALLFLOW},
+    {KEY_NULL, UART_WALL_FOLLOW, KEY_WALLFLOW},//    {KEY_NULL, UART_WALL_FOLLOW, KEY_WALLFLOW},
+    {KEY_NULL, UART_ENHANCE,     KEY_ADJUST1}, // 强力模式
+    {KEY_NULL, UART_NORMAL,      KEY_ADJUST}, // 强力模式
+    {KEY_NULL, UART_MODE1,     	 KEY_SOS},//用作其他模式切换自动清扫
+
+
         
 };
 
@@ -58,12 +62,12 @@ void uart_cmd_ext_handle(void)
 }
 
 //64Hz call
+//64Hz call
 U16 get_tmp_cmd(void)
 {
 
   return 0;
 }
-
 void wifi_uart_cmd_rounte(void)
 {
     int i = 0;
@@ -91,7 +95,7 @@ void wifi_uart_cmd_rounte(void)
               key_check[2] = 0;
               key_check[3] = 0;
               key_check[(i-3)] = 1;
-              #if defined(USE_WIFI_DEMO_2)
+              #ifdef USE_WIFI_DEMO_2
               if((get_ui_state() == UI_ENTER_SLEEPING))
               {
                   set_ui_state(UI_IDLE);
@@ -105,7 +109,7 @@ void wifi_uart_cmd_rounte(void)
               key_check[1] = 0;
               key_check[2] = 0;
               key_check[3] = 0;
-             // printf("uart_cmd i=%d\r\n",i);
+              //printf("uart_cmd i=%d\r\n",i);
               wifi_uart_cmd_state[i].state = KEY_SHORT_UP;
           }
            
