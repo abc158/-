@@ -22,7 +22,7 @@ typedef struct
 #define AM_I0_SPOT_LED            GPIOC(15)
 #define AM_I0_DOCK_LED            GPIOD(0)
 #define HAL_IO_AUDIO_PWR_EN       GPIOD(1)
-#define AM_I0_LED_DIG1            GPIOD(2)
+#define AM_I0_LED_DIG1            0xff
 #define AM_IO_SWITCH_DET          GPIOD(5)
 #define AM_I0_WIRELESS_SPIEN      GPIOD(6)
 #define AM_IO_VAC_POWER           GPIOD(6)
@@ -53,8 +53,8 @@ typedef struct
 #define AM_I0_FLASH_DATA_O        GPIOF(15)
 #define AM_I0_FLASH_DATA_I        GPIOF(14)
 #define AM_I0_FLASH_CLOCK         GPIOF(13)
-#define AM_IO_WIFI_POWER          GPIOE(10)
-#define AM_IO_RESET_WIFI          GPIOD(9)
+#define AM_IO_WIFI_POWER          GPIOD(2)
+#define AM_IO_RESET_WIFI          GPIOD(4)
 #define AM_IO_WIFI_WAKE_UP        GPIOD(12)
 #define AM_I0_WATER_TANK_DETECT   GPIOB(7)
 #define AM_IO_BUSTBIN_DETECT      0xff

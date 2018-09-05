@@ -126,7 +126,6 @@ void key_routine(void)
       gpio_state = gpio_get_value(key_press_state[i].am_io);
       if (gpio_state == key_press_state[i].input_gpio_state)
       { 
-      printf("11111111111111111111\r\n");
         key_press_on[i]++; 
         key_press_off[i] = 0;    
         if (key_press_on[i] >= 4 && key_press_on[i] < 200)

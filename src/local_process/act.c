@@ -1243,7 +1243,7 @@ void handle_act_common(U32 key_val)
 		case KEY_CLEAN | KEY_LONG:
 	   #ifdef USE_UART_WIFI 
 	 //放置进入整机测试时候出发配网
-	   //if(wifi_press_long_flag == 0)
+	   if(wifi_press_long_flag == 0)
 	   {
 	   
 	       printf("ENTER WIFI CONFIG!!\r\n");

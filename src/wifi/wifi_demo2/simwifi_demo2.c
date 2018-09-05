@@ -67,9 +67,10 @@ static void check_and_powerup_wifi_module(void)
 {
     if (wifi_powerup_count == 0) 
 	{
-        gpio_request_one(AM_IO_WIFI_POWER,GPIO_F_DIR_OUT|GPIO_F_INIT_LOW);
-        gpio_request_one(AM_IO_RESET_WIFI,GPIO_F_DIR_OUT|GPIO_F_INIT_LOW);
+        gpio_request_one(AM_IO_WIFI_POWER,GPIO_F_DIR_OUT|GPIO_F_INIT_HIGH);
+        gpio_request_one(AM_IO_RESET_WIFI,GPIO_F_DIR_OUT|GPIO_F_INIT_HIGH);
         gpio_set_value(AM_IO_WIFI_POWER,1);
+				gpio_set_value(AM_IO_RESET_WIFI,1);
     } 
    
     if (wifi_powerup_count <= WIFI_RESET_HOLD_COUNT) 
@@ -666,11 +667,9 @@ U8 uart_server_routine(void)
 	#endif
 
 	if(wifi_data_read())//读取到一包适合的数据
-		{
 		parseCommand(revbuf);//解析数据
 		deal_flag = 1;
-		}
-  return 0;
+	return 0;
 }
 
 void map_data_send_timer(void)
