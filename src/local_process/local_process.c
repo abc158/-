@@ -139,15 +139,16 @@ void local_app_init(void)
 *Return     :  нч
 *Others     :  
 ******************************************************************/
-extern void robot_side_brush_adjust_set(u16 speed);
-extern void robot_mid_brush_adjust_set(u16 speed);
-extern void robot_suction_adjust_set(u16 val);
-extern void robot_suction_ctrl(BOOLEAN en);
-extern void robot_sidebrush_vols_set(u16 speed);
-extern void robot_midbrush_vols_set(u16 speed);
-extern void print_cliff();
-extern void print_touch();
-extern void print_debug_lt_auto();
+//extern void robot_side_brush_adjust_set(u16 speed);
+//extern void robot_mid_brush_adjust_set(u16 speed);
+//extern void robot_suction_adjust_set(u16 val);
+//extern void robot_suction_ctrl(BOOLEAN en);
+//extern void robot_sidebrush_vols_set(u16 speed);
+//extern void robot_midbrush_vols_set(u16 speed);
+//extern void print_cliff();
+//extern void print_touch();
+//extern void print_debug_lt_auto();
+U16 timer_count=0;
 void main_app_task(void *arg)
 {	  
   UI_STATE_E s;

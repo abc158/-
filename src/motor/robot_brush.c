@@ -147,6 +147,7 @@ void robot_sidebrush_vols_set(u16 speed)
     <author>       <time>      <version>           <desc>
     lyy            17.4.28       v1.0         build this function
 ******************************************************************/
+extern U16 wetmop_detect(void);
 void robot_midbrush_vols_set(u16 speed)
 {
   if(speed > 0)
@@ -157,7 +158,7 @@ void robot_midbrush_vols_set(u16 speed)
   {
     midbrush_off = TRUE;
   }
-  if(gpio_get_value(!AM_I0_WATER_TANK_DETECT))
+  if(!wetmop_detect())
 	   midbrush_off = TRUE;
 }
 

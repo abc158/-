@@ -19,7 +19,6 @@ U16 data_length2 = 0;
 
 U16 queue_len[4] = {QUEUE_LEN,QUEUE_LEN,QUEUE_LEN2,QUEUE_LEN2};
 
-
 void uart_txrx_init(void)
 {
     memset(txrx_queue, 0, sizeof(txrx_queue));

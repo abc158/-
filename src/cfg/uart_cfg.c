@@ -98,7 +98,6 @@ int debug_uart_handler(int sr, int data)
   return ret;
 }
 
-
 int wifi_uart_handler(int sr, int data)
 {
   int ret = -1;
@@ -108,7 +107,7 @@ int wifi_uart_handler(int sr, int data)
       IRQ_Usart1RxData_Process((u8)(data&0xff));
     #elif defined(USE_WIFI_DEMO_2)
       if(uart_txrx_q_full(WIFI_RX_INDEX) == 0)
-      {
+      {   
           uart_txrx_q_put(WIFI_RX_INDEX,(u8)(data&0xff));
       }
     #endif    
@@ -123,7 +122,7 @@ int wifi_uart_handler(int sr, int data)
     else
     {
       ret = uart_txrx_q_get(WIFI_TX_INDEX);//uart_out_3_getc( ) ; //
-      //printf("ret %x\r\n",ret);
+     // printf("ret %x\r\n",ret);
     }
 
     return ret;

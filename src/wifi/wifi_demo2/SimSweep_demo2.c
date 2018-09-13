@@ -382,7 +382,7 @@ void send_robot_state_to_wifi(void)
 		}
 	}
 	msg[4] = get_water_step();
-    if(wetmop_detect() == 1){//有水箱
+    if(wetmop_detect()){//有水箱
 		msg[5] = 0x02;//水箱模式下关闭风机
 	}else{
 	    if(get_vac_state()==0){//普通模式

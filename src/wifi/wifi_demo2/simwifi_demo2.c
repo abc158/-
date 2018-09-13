@@ -25,8 +25,8 @@
 #include "SimSweep_demo2.h"
 #include "charge/charge.h"
 
-#define YUGONG_SEND_DEBUG
-#define YUGONG_REC_DEBUG
+//#define YUGONG_SEND_DEBUG
+//#define YUGONG_REC_DEBUG
 
 
 #define WIFI_UART 1
@@ -62,19 +62,17 @@ extern u8 wake_to_rxwifidata;
 
 void Usart_SendByte(uint8_t Value);
 
-
 static void check_and_powerup_wifi_module(void)
 {
-    if (wifi_powerup_count == 0) 
-	{
-        gpio_request_one(AM_IO_WIFI_POWER,GPIO_F_DIR_OUT|GPIO_F_INIT_HIGH);
-        gpio_request_one(AM_IO_RESET_WIFI,GPIO_F_DIR_OUT|GPIO_F_INIT_HIGH);
+    if (wifi_powerup_count == 0)
+	  {     
+        gpio_request_one(AM_IO_WIFI_POWER,GPIO_F_OUT_INIT_HIGH);
+        gpio_request_one(AM_IO_RESET_WIFI,GPIO_F_OUT_INIT_LOW);
         gpio_set_value(AM_IO_WIFI_POWER,1);
 				gpio_set_value(AM_IO_RESET_WIFI,1);
     } 
-   
     if (wifi_powerup_count <= WIFI_RESET_HOLD_COUNT) 
-	{
+		{
       wifi_powerup_count++;
     }
 }
@@ -191,7 +189,7 @@ U8 send_pack(U8 cmd, U8 *data_buf, U8 datalen)
 void sendTask(void)
 {    
     if(send_ack_enable_flag==1)
-    {        
+    {       
         send_ack_enable_flag=0;
         switch (send_state)
         {
@@ -320,7 +318,7 @@ void calc_electricity(U16  voltage)
 			sys_state_info_p.robot_state == ROBOT_STATE_DOCK || \
 			sys_state_info_p.robot_state == ROBOT_STATE_REMOTE_DRIVE )
 		{
-        	if(gpio_get_value(AM_IO_BUSTBIN_DETECT)==1)//无水箱
+        	if(!wetmop_detect())//无水箱
             {
 	            if((voltage_adc[i] - NOMAL_SPORT)> voltage)  
 	            {
@@ -667,8 +665,10 @@ U8 uart_server_routine(void)
 	#endif
 
 	if(wifi_data_read())//读取到一包适合的数据
+		{
 		parseCommand(revbuf);//解析数据
 		deal_flag = 1;
+		}
 	return 0;
 }
 

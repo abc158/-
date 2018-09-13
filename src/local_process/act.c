@@ -105,35 +105,7 @@ void set_electricity_drop_flag(u8 flag){
 u8 get_electricity_drop_flag(void){
 	return electricity_drop_flag;
 }
-U8 wetmop_flag=0;
 
-U16 wetmop_detect(void)
-{
-  u8 dec_cnt = 0;
-  u8 i = 0;
-	
-  for (i=0; i<10; i++)
-  {
-    if(!gpio_get_value(AM_IO_BUSTBIN_DETECT))
-    {
-      dec_cnt++;
-    }
-  }
-  if (dec_cnt >= 6)
-  {
-  	if(wetmop_flag==0){//初始化水箱放水档位为正常档
-		set_water_step(2);
-	}
-    wetmop_flag = 1;//有水箱
-    return 1;
-  }
-  else
-  {
-    wetmop_flag = 0;//无水箱
-    set_water_step(0);//无水箱时候还原水箱档位为关闭
-    return 0;
-  }
-}
 void set_vac_satte(u8 state){
   vac_state = state;
   if (state == 1)
@@ -327,7 +299,7 @@ u8 ext_act_handle(U32 key)
 	  set_start_docking_state(0);
 	}
 	if((sys_state_info_p.robot_state == ROBOT_STATE_DOCK) && \
-	     !gpio_get_value(AM_I0_WATER_TANK_DETECT))//拖地模式下不响应回座
+	     wetmop_detect())//拖地模式下不响应回座
 	{
 		act_command_q(CMD_PAUSE, CMD_STOP, NULL, 0); 	
 	}
@@ -439,6 +411,7 @@ void act_routine(void)
      if(wifi_uart_cmd_state_p[i].state != KEY_NULL)
      {
        key_value = wifi_uart_cmd_state_p[i].state | wifi_uart_cmd_state_p[i].keyval;
+			 //printf("wifi key_value %d \r\n",key_value);
        wifi_uart_cmd_state_p[i].state = KEY_NULL;//clear the message
      } 
   }
@@ -483,7 +456,7 @@ void handle_act_waiting(U32 key_val)
       #endif
 
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -494,7 +467,7 @@ void handle_act_waiting(U32 key_val)
       break;
       
     case KEY_DOCK | KEY_SHORT_UP:
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }
@@ -554,7 +527,7 @@ void handle_act_running(U32 key_val)
       break;
       
     case KEY_DOCK | KEY_SHORT_UP:
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }	  
@@ -608,7 +581,7 @@ void handle_act_pausing(U32 key_val)
   { 
     case KEY_CLEAN | KEY_SHORT_UP:
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -619,7 +592,7 @@ void handle_act_pausing(U32 key_val)
       break;
       
     case KEY_DOCK | KEY_SHORT_UP:
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }	  
@@ -674,7 +647,7 @@ void handle_act_spotting(U32 key_val)
   { 
     case KEY_CLEAN | KEY_SHORT_UP:
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -686,7 +659,7 @@ void handle_act_spotting(U32 key_val)
       break;
       
     case KEY_DOCK | KEY_SHORT_UP:
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }	  
@@ -760,7 +733,7 @@ void handle_act_wall_following(U32 key_val)
   { 
     case KEY_CLEAN | KEY_SHORT_UP:
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -771,7 +744,7 @@ void handle_act_wall_following(U32 key_val)
       break;
       
     case KEY_DOCK | KEY_SHORT_UP:
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }	  
@@ -824,7 +797,7 @@ void handle_act_remote_driving(U32 key_val)
     case KEY_CLEAN | KEY_SHORT_UP:
 	  clean_out_key_flg();
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -836,7 +809,7 @@ void handle_act_remote_driving(U32 key_val)
       
     case KEY_DOCK | KEY_SHORT_UP:
 	  clean_out_key_flg();
-	  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	  if(wetmop_detect())
 	  {
 	  	  break;
 	  }	  
@@ -899,7 +872,7 @@ void handle_act_docking(U32 key_val)
   { 
     case KEY_CLEAN | KEY_SHORT_UP:
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -960,7 +933,7 @@ void handle_act_charging(U32 key_val)
   { 
     case KEY_CLEAN | KEY_SHORT_UP:
       act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-      if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+      if(!wetmop_detect())
       {
           songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
       }
@@ -1169,7 +1142,7 @@ void handle_act_common(U32 key_val)
 		(sys_state_info_p.robot_state != ROBOT_STATE_WAITING) && \
 		  (sys_state_info_p.robot_state != ROBOT_STATE_PAUSE) && \
 			(sys_state_info_p.robot_state != ROBOT_STATE_REMOTE_DRIVE) && \
-			gpio_get_value(AM_I0_WATER_TANK_DETECT))
+			!wetmop_detect())
       {
           if (enhance_mode)
           {
@@ -1484,7 +1457,7 @@ void state_save_and_recover_grid(u8 flag)
 	  { 
 		case ROBOT_STATE_CLEANING_ROOM:
 		  act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-		  if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+		  if(!wetmop_detect())
 		  {
 			  songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
 		  }
@@ -1500,7 +1473,7 @@ void state_save_and_recover_grid(u8 flag)
 		  break;  
 		  
 		case ROBOT_STATE_DOCK:
-		  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+		  if(wetmop_detect())
 		  {
 			  break;
 		  }		  
@@ -1578,7 +1551,7 @@ void state_recover(void)
 	  break;
 	case ROBOT_STATE_CLEANING_ROOM:
 		  act_command_q(CMD_CLEAN, CMD_RUN, NULL, 0);
-		  if(gpio_get_value(AM_I0_WATER_TANK_DETECT))
+		  if(!wetmop_detect())
 		  {
 			  songplayer_play_id(SONG_ID_NORMAL_CLEANING_START, 0);
 		  }
@@ -1595,7 +1568,7 @@ void state_recover(void)
 //		  printf("robot stop\r\n");		  
 	  break;	 		  
 	case ROBOT_STATE_DOCK:
-		  if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+		  if(wetmop_detect())
 		  {
 			  break;
 		  }	  
@@ -1606,4 +1579,98 @@ void state_recover(void)
 	  break;		  
 	}
 	set_save_state(0);
+}
+
+U8 wetmop_flag=0;
+U16 wetmop_detect(void)
+{
+  u8 dec_cnt = 0;
+  u8 i = 0;
+	
+  for (i=0; i<10; i++)
+  {
+    if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+    {
+      dec_cnt++;
+    }
+  }
+  if (dec_cnt >= 6)
+  {
+  	if(wetmop_flag==0){//初始化水箱放水档位为正常档
+		set_water_step(2);
+	}
+    wetmop_flag = 1;//有水箱
+    return 1;
+  }
+  else
+  {
+    wetmop_flag = 0;//无水箱
+    set_water_step(0);//无水箱时候还原水箱档位为关闭
+    return 0;
+  }
+}
+U32 wetmop_count=0;
+U32 wetmop_count_onoff=0;
+U8 start_wetmop_flag=0;
+void watermop_ctrl(void)
+{
+	u16 start_wetmop_time = 500;
+		//回充状态下水箱不打开
+		if(wetmop_flag && IS_CLEANNING_MODE(sys_state_info_p.robot_state) && (charging_dock() == 0))	//水箱控制
+		{
+			if(!start_wetmop_flag)
+			{
+					wetmop_count++;
+													
+					if((wetmop_count >=start_wetmop_time)&&(wetmop_count < (start_wetmop_time+300)))
+					{
+							gpio_set_value(AM_IO_WETMOP_C,0);
+			
+					}
+					else if((wetmop_count >=(start_wetmop_time+300+500))&&(wetmop_count <= (start_wetmop_time+300+500+300)))
+					{
+							gpio_set_value(AM_IO_WETMOP_C,0);
+					}
+					else
+					{
+							gpio_set_value(AM_IO_WETMOP_C,1);
+					}
+					if(wetmop_count >=(start_wetmop_time+300+500+300+500))
+					{
+							start_wetmop_flag=1;
+							wetmop_count = 0;
+							gpio_set_value(AM_IO_WETMOP_C,0);
+					}
+			}
+			else
+			{
+					if(wetmop_count>4000)
+					{
+						gpio_set_value(AM_IO_WETMOP_C,1);
+						//if(wetmop_count > (4000+(get_water_step()*130)))
+						if(wetmop_count > (4000+(10*130)))
+						{
+							wetmop_count = 0;
+							gpio_set_value(AM_IO_WETMOP_C,0);
+						}
+						else
+							{
+							wetmop_count++;
+							}
+					}
+					else
+					{
+						wetmop_count++;
+						gpio_set_value(AM_IO_WETMOP_C,0);
+					}
+			}
+		}
+		else
+		{
+			if(start_wetmop_flag==1)
+				wetmop_count = 0;
+				gpio_set_value(AM_IO_WETMOP_C,0); 
+//			set_water_step(0);//设置水箱档位为关闭
+		}
+
 }

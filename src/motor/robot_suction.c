@@ -234,13 +234,14 @@ void robot_suction_init(void)
     <author>       <time>      <version>           <desc>
     lyy            17.4.28       v1.0         build this function
 ******************************************************************/
+extern U16 wetmop_detect(void);
 void robot_suction_vols_set(u16 val)
 {
     if(val > 0)
       suction_off = 0;
     else
       suction_off = 1;  
-	if(!gpio_get_value(AM_I0_WATER_TANK_DETECT))
+	if(!wetmop_detect())
 	  suction_off = 1;
 }
 

@@ -140,8 +140,8 @@ typedef enum
   MAIN_BRUSH_TWINE_CURRENT= 1000,  /*判断缠住*/
   SIDE_BRUSH_TWINE_CURRENT= 800,   /*判断缠住*/
   VACUUM_STALL_CURRENT    = 500,	/*判断真空堵住*/
-  MAIN_BRUSH_MAX_VOLTAGE  = 2000, /*主刷的最大工作电压*/
-  MAIN_BRUSH_MIN_VOLTAGE  = 2000,  /*主刷的最小工作电压*/
+  MAIN_BRUSH_MAX_VOLTAGE  = 1300, /*主刷的最大工作电压*/
+  MAIN_BRUSH_MIN_VOLTAGE  = 1300,  /*主刷的最小工作电压*/
   SIDE_BRUSH_MAX_VOLTAGE  = 1500, /*边刷的最大工作电压*/
   SIDE_BRUSH_MIN_VOLTAGE  = 1500,  /*边刷的最小工作电压*/
   VACUUM_NORMAL_VOLTAGE      = 2590, /*1700*/
@@ -163,7 +163,7 @@ typedef enum
 /*物理结构上的一些信息*/
 #define  WHEEL_DIA                  69.0f
 #define  WHEEL_LEFT_RIGHT_DISTANCE  200.7f
-#define  WHEEL_CODE_RATIO           554.8f
+#define  WHEEL_CODE_RATIO           504.8f
 #define  PAD_WIDTH                  315.0f
 
 typedef enum

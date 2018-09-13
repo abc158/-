@@ -38,7 +38,7 @@ typedef struct
 	m( GPIO_DIR_OUT ,    2 ,  6 ,   1 ,GPIO_PR_DOWN     )  \
 	m( GPIO_DIR_IN ,     2 ,  7 ,   1 ,GPIO_PR_DISABLE  )  \
 	m( GPIO_DIR_IN ,     2 ,  8 ,   1 ,GPIO_PR_DISABLE  )\
-	m( GPIO_DIR_IN ,     2 ,  9 ,   1 ,GPIO_PR_DISABLE  ) \
+	m( GPIO_DIR_OUT ,     2 ,  9 ,   1 ,GPIO_PR_UP  ) \
 	m( GPIO_DIR_OUT ,    2 ,  10 ,  1 ,GPIO_PR_UP       ) \
 	m( GPIO_DIR_OUT ,     2 ,  11 ,  1 ,GPIO_PR_UP       )   \
 	m( GPIO_DIR_IN ,     2 ,  12 ,  1 ,GPIO_PR_UP       ) \

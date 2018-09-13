@@ -465,7 +465,7 @@ void sensor_handle_cliff(void)
             }
             else if(signal_delta[i]  < signal_threshold_off[i])
             {
-                cliff = 1;
+                //cliff = 1;
             }
             else
             {
