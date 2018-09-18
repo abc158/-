@@ -141,7 +141,7 @@ U8 uart_txrx_q_full(U8 index)
     {
         if(index == WIFI_RX_INDEX)
         {
-            printf("q_full!!\r\n");
+            //printf("q_full!!\r\n");
         }
         return 1;
     }

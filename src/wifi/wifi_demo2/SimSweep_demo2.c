@@ -91,7 +91,7 @@ void parser_wifi_state(U8 *data_buf)
 		set_wifi_state(WIFI_CONNECT_OK);   // 成功连接到 云台服务区
 		if(wifi_connect_flag==0&&wifi_sound_flag){
 			wifi_sound_flag = 0;
-			songplayer_play_id(SONG_ID_BUTTON_CLICK, 0);
+			songplayer_play_id(SONG_ID_WIFI_SUCCESS, 0);
 			wifi_connect_flag = 1;
 		}
 	}
@@ -100,7 +100,7 @@ void parser_wifi_state(U8 *data_buf)
     	set_wifi_state(WIFI_WAIT_CONNECT);
 		if(wifi_connect_flag == 1&&wifi_sound_flag){
 			wifi_connect_flag = 0;
-			songplayer_play_id(VOICE_ID_ERROR_NOTIFY, 0);
+			songplayer_play_id(SONG_ID_WIFI_FAIL, 0);
 		}
     }
     
@@ -538,8 +538,8 @@ void send_map_data_to_wifi(void)
 	  
       send_pack(CMD_MAP, msg, (j+5));
 	  
-//	  printf("#Send_map\n");
-//      printf("map:x:%d,y:%d,type:%d\r\n",save_x,save_y,save_type);
+	 // printf("#Send_map\n");
+   //   printf("map:x:%d,y:%d,type:%d\r\n",save_x,save_y,save_type);
 
   }
 }
@@ -592,6 +592,7 @@ void ui_put_map_point_info(uint16_t x, uint16_t y, uint8_t type, uint16_t direct
     real_map_points->points[real_map_points->count-1].x = x;
     real_map_points->points[real_map_points->count-1].y = y;
     real_map_points->points[real_map_points->count-1].type = type;
+    // printf("x =%d y= %d type = %d\r\n",x,y,type);
 	
     if (type == MAP_POINT_TYPE_CURRENT)
 	{

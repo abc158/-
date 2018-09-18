@@ -19,7 +19,7 @@ typedef struct
 	/* Port 0 B  */\
 	m( GPIO_DIR_IN ,     1 ,  0 ,   6 ,GPIO_PR_DISABLE )   \
 	m( GPIO_DIR_IN ,     1 ,  6 ,   1 ,GPIO_PR_DISABLE )   \
-	m( GPIO_DIR_IN ,     1 ,  7 ,   1 ,GPIO_PR_DISABLE )   \
+	m( GPIO_DIR_IN ,     1 ,  7 ,   1 ,GPIO_PR_UP )   \
 	m( GPIO_DIR_OUT ,    1 ,  8 ,   1 ,GPIO_PR_UP     )   \
 	m( GPIO_DIR_IN ,     1 ,  9 ,   1 ,GPIO_PR_DISABLE )   \
 	m( GPIO_DIR_IN ,     1 ,  10 ,  1 ,GPIO_PR_DISABLE )   \

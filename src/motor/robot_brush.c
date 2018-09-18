@@ -158,8 +158,8 @@ void robot_midbrush_vols_set(u16 speed)
   {
     midbrush_off = TRUE;
   }
-  if(!wetmop_detect())
-	   midbrush_off = TRUE;
+//  if(wetmop_detect())
+//	   midbrush_off = TRUE;
 }
 
 /****************************************************************

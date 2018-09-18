@@ -1227,7 +1227,7 @@ void handle_act_common(U32 key_val)
 	        send_config_network_cmd(); //进入wifi配网模式
 	       #endif
 	       songplayer_play_id(VOICE_ID_BUTTON_CLICK, 0);//叮咚
-	       //songplayer_play_id(SONG_ID_WIFI_CONNECTING, 0);
+	       songplayer_play_id(SONG_ID_WIFI_CONNECTING, 0);
 	   waiting_state_cnt = 0;
 	       wifi_press_long_flag = 1;
 	       wifi_flag = 1;
@@ -1608,6 +1608,7 @@ U16 wetmop_detect(void)
     set_water_step(0);//无水箱时候还原水箱档位为关闭
     return 0;
   }
+  return 0;
 }
 U32 wetmop_count=0;
 U32 wetmop_count_onoff=0;

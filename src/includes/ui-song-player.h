@@ -4,7 +4,6 @@
 #include "ui-typedef.h"
 
 //#define USE_BEEP_PLAYER
-
 //audio file index in spi flash
 typedef enum 
 {
@@ -75,7 +74,7 @@ typedef enum
     VOICE_ID_EX_LOCAL_CLEANING              = 65,  
     VOICE_ID_EX_ENTER_TEST                  = 66,
     VOICE_ID_EX_SCHEDULE_CLEAR              = 67,
-    VOICE_ID_EX_KEYSTONE_CLEANING           = 68,
+    VOICE_ID_EX_06              = 68,
     VOICE_ID_EX_07              = 69,
     VOICE_ID_EX_08              = 70,
     VOICE_ID_EX_09              = 71,
@@ -100,6 +99,7 @@ typedef enum
 #define SONG_ID_BUTTON_REJECT               VOICE_ID_BUTTON_REJECT
 #define SONG_ID_POWER_OFF                   VOICE_ID_POWER_OFF
 #define SONG_ID_POWER_UP                    VOICE_ID_BUTTON_POWER_ON
+//#define SONG_ID_POWER_UP                     VOICE_ID_ERROR_NOTIFY
 #define SONG_ID_CHARGING_START              VOICE_ID_START_CHARGE
 //#define SONG_ID_CHARGING_STOP,
 #define SONG_ID_CHARGING_ERROR_STOP         VOICE_ID_CHARGER_BAD
@@ -119,13 +119,38 @@ typedef enum
 #define SONG_ID_WALLFOLLOW_CLEANING_START   VOICE_ID_START_WALLFOLLOW
 #define SONG_ID_WALLFOLLOW_CLEANING_STOP    VOICE_ID_STOP_CLEAN
 #define SONG_ID_WALLFOLLOW_CLEANING_COMPLETE    VOICE_ID_JOB_COMPLETE
+
+//µ•º‰«Â…®
+#define SONG_ID_DANJIAN_CLEANING_START    VOICE_ID_EX_06
+
+
+
 #define SONG_ID_BE_PICKED_UP VOICE_ID_BE_PICKED_UP
+
+#define SONG_ID_ENTER_PAUSED                VOICE_ID_ENTER_PAUSED 
+
+#define SONG_ID_WIFI_CONNECTING             VOICE_ID_EX_07
+
+#define SONG_ID_WIFI_SUCCESS                VOICE_ID_EX_08
+
+#define SONG_ID_WIFI_FAIL                   VOICE_ID_EX_09
+
+#define SONG_ID_WIFI_CONNET_OK              VOICE_ID_CONFIG_BACKING_UP
+#define SONG_ID_WIFI_CONNECT                VOICE_ID_ERROR_18_REVERSE
+#define SONG_ID_WIFI_CONNECT_fail            VOICE_ID_ERROR_00_REVERSE
+#define SONG_ID_TEST_MODE                    VOICE_ID_REMOTE_CONTROL
+#define SONG_ID_WetMop                       VOICE_ID_ERROR_14_REVERSE      
+#define SONG_ID_GRID                         VOICE_ID_ERROR_13_REVERSE       
+#define SONG_ID_VAC_POWER                    VOICE_ID_GO_SLEEP
+#define SONG_ID_VAC_SOFT                     VOICE_ID_RESET_CLEAN
+#define SONG_ID_SCHEDULE_TIME                VOICE_ID_ERROR_20_REVERSE
+#define SONG_ID_SET_TIME                     VOICE_ID_ERROR_21_REVERSE
+
+#define SONG_ID_SCHEDULE_CLEAR               VOICE_ID_EX_SCHEDULE_CLEAR
+
 #define SONG_ID_START_MOP                    VOICE_ID_START_MOP
-#define SONG_ID_BUTTON_CANCEL               VOICE_ID_ERROR_00_REVERSE
-#define SONG_ID_WIFI_CONNET_OK              VOICE_ID_ERROR_00_REVERSE
-#define SONG_ID_ENTER_PAUSED                VOICE_ID_ENTER_PAUSED
-#define SONG_ID_ENTER_TEST                  VOICE_ID_EX_ENTER_TEST
-#define SONG_ID_KEYSTONE_CLEANING           VOICE_ID_EX_KEYSTONE_CLEANING
+#define SONG_ID_KEYSTONE_CLEANING            VOICE_ID_EX_LOCAL_CLEANING
+
 int songplayer_init(void);
 int songplayer_quit_playing(void);
 int songplayer_is_playing(void);

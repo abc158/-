@@ -241,7 +241,7 @@ void robot_suction_vols_set(u16 val)
       suction_off = 0;
     else
       suction_off = 1;  
-	if(!wetmop_detect())
+	if(wetmop_detect())
 	  suction_off = 1;
 }
 
