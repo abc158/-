@@ -641,7 +641,7 @@ U8 robot_get_dock_signals(U8 index)
 	{
 		dprintf(DEBUG_DOCK_SIGNAL, "IR%d : %x \r\n", index, dock_signals[index]);
 		//if((dock_signals[index]&0xB1)==0xB1)
-    printf("%d IR %x\r\n",index, dock_signals[index]);            
+    //printf("%d IR %x\r\n",index, dock_signals[index]);            
                 dock_signal_get_time=timer_ms();
 		dock_avoid_get_signals(index, dock_signals[index]);
 		virtual_wall_get_signals(index, dock_signals[index]);

@@ -23,9 +23,10 @@ static sys_state_info sys_state_info_p; /*ϵͳ״̬*/
 
 int led_gpio_group[LED_GPIO_NUM]=
 {
-  AM_I0_CLEAN_LED  ,
+  AM_I0_CLEAN_LED_RED  ,
   AM_I0_DOCK_LED   ,
-  AM_I0_SPOT_LED    
+  AM_I0_WF_LED    ,
+  AM_I0_CLEAN_LED_GREEN
 };
 
 /****************************************************************
@@ -124,27 +125,37 @@ void set_led(U8 led_id)
 {
   switch(led_id)
   {
-  case CLEAN_LED:
+  case CLEAN_LED_R:
     {
-      gpio_set_value(AM_I0_CLEAN_LED, 1);
+			gpio_set_value(AM_I0_CLEAN_LED_RED, 1);
     }
     break;
+ case CLEAN_LED_G:
+    {
+			gpio_set_value(AM_I0_CLEAN_LED_GREEN, 1);
+    }
+    break;
+ 	case ORANGE_LED:
+		{
+			gpio_set_value(AM_I0_CLEAN_LED_RED, 1);
+			gpio_set_value(AM_I0_CLEAN_LED_GREEN, 1);
+		}
   case DOCK_LED:
     {
       gpio_set_value(AM_I0_DOCK_LED,1);
     }
     break;
-  case SPOT_LED:
+  case WF_LED:
     {
-      gpio_set_value(AM_I0_SPOT_LED,1);
-      //gpio_set_value(AM_I0_CLEAN_LED,1);
+      gpio_set_value(AM_I0_WF_LED,1);
     }
     break;
   case ALL_LED:
     {
-      gpio_set_value(AM_I0_CLEAN_LED,1);
-      gpio_set_value(AM_I0_DOCK_LED,1);
-      gpio_set_value(AM_I0_SPOT_LED,1);
+		gpio_set_value(AM_I0_CLEAN_LED_RED, 1);
+		gpio_set_value(AM_I0_CLEAN_LED_GREEN, 1);
+		gpio_set_value(AM_I0_WF_LED,1);
+		gpio_set_value(AM_I0_DOCK_LED,1);
     }     
     break;
   }
@@ -163,28 +174,41 @@ void reset_led(U8 led_id)
 {
   switch(led_id)
   {
-  case CLEAN_LED:
-    {
-      gpio_set_value(AM_I0_CLEAN_LED,0);
-    }
-    break;
-  case DOCK_LED:
-    {
-      gpio_set_value(AM_I0_DOCK_LED,0);
-    }
-    break;
-  case SPOT_LED:
-    {
-      gpio_set_value(AM_I0_SPOT_LED,0);
-    }
-    break;
-  case ALL_LED:
-    {
-      gpio_set_value(AM_I0_CLEAN_LED,0);
-      gpio_set_value(AM_I0_DOCK_LED,0);
-      gpio_set_value(AM_I0_SPOT_LED,0);
-    }
-    break;
+		case CLEAN_LED_R:
+				{
+					gpio_set_value(AM_I0_CLEAN_LED_RED, 0);
+				}
+				break;
+		 case CLEAN_LED_G:
+				{
+					gpio_set_value(AM_I0_CLEAN_LED_GREEN, 0);
+				}
+				break;
+		 case ORANGE_LED:
+				{
+					gpio_set_value(AM_I0_CLEAN_LED_RED, 0);
+					gpio_set_value(AM_I0_CLEAN_LED_GREEN, 0);
+				}
+				break;
+			case DOCK_LED:
+				{
+					gpio_set_value(AM_I0_DOCK_LED,0);
+				}
+				break;
+			case WF_LED:
+				{
+					gpio_set_value(AM_I0_WF_LED,0);
+				}
+				break;
+			case ALL_LED:
+				{
+				gpio_set_value(AM_I0_CLEAN_LED_RED, 0);
+				gpio_set_value(AM_I0_CLEAN_LED_GREEN, 0);
+				gpio_set_value(AM_I0_WF_LED,0);
+				gpio_set_value(AM_I0_DOCK_LED,0);
+				} 		
+				break;
+
     
   }
 }
@@ -224,36 +248,33 @@ void display_power_up(void)
     break;
   case 1:
     reset_led(ALL_LED);  
-    //set_led(SPOT_LED); 
-    set_led(CLEAN_LED); 
+    set_led(WF_LED); 
     if(time_cnt == 0)
       time_cnt = SLOW_TIME;
     break;
   case 2:
     reset_led(ALL_LED);  
-    //set_led(CLEAN_LED); 
     set_led(DOCK_LED); 
     if(time_cnt == 0)
       time_cnt = SLOW_TIME;
     break;
   case 3:
     reset_led(ALL_LED);  
-    //set_led(DOCK_LED); 
-    set_led(CLEAN_LED); 
+    set_led(WF_LED); 
     if(time_cnt == 0)
       time_cnt = SLOW_TIME;
     break; 
   case 4:
     reset_led(ALL_LED);  
     set_led(DOCK_LED); 
-    set_led(SPOT_LED); 
+    set_led(WF_LED); 
     if(time_cnt == 0)
       time_cnt = SLOW_TIME;
     break; 
   case 5:
     reset_led(ALL_LED);  
-    set_led(CLEAN_LED); 
-    set_led(SPOT_LED); 
+    set_led(CLEAN_LED_R); 
+    set_led(CLEAN_LED_G); 
     if(time_cnt == 0)
       time_cnt = SLOW_TIME+20;
     break; 
@@ -279,11 +300,11 @@ void display_testing(void)
 {
 	if (get_test_result() != 0)
   {
-  	set_led(GREEN_LED);
+  	set_led(CLEAN_LED_G);
   }
   else
   {
-  	set_led(RED_LED);
+  	set_led(CLEAN_LED_R);
   }
 }
 
@@ -328,7 +349,7 @@ void display_routine(void)
   }
   else if (s == UI_ERROR)
   {
-    set_led(RED_LED);
+    set_led(CLEAN_LED_R);
     return;
   }  
   
@@ -358,15 +379,17 @@ void display_routine(void)
       }
       else
       {
-        set_led(GREEN_LED);
+        set_led(CLEAN_LED_G);
       }
     }
     break;
     
   case ROBOT_STATE_SPOTTING:
+		set_led(CLEAN_LED_G); 
+		break;
   case ROBOT_STATE_WALLFOLLOW:
     {
-      set_led(GREEN_LED);
+      set_led(WF_LED);
     }
     break;
     
@@ -386,7 +409,7 @@ void display_routine(void)
       }
       else
       {
-        set_led(GREEN_LED);
+        set_led(CLEAN_LED_G);
       }
     }
     break;         
@@ -396,6 +419,11 @@ void display_routine(void)
       set_led(ORANGE_LED);           
     }
     break;
+	case	ROBOT_STATE_DOCK:
+		{
+      set_led(DOCK_LED);
+    }
+    break;  
   default:
     set_led(ALL_LED);  
     break;

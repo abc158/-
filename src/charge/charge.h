@@ -42,7 +42,7 @@ typedef enum
 
 #define BAT_CAP 	2200  //电池容量 单位：mA
 
-#define VOL_PARM		0.18333	//根据电压计算adc的参数，从原理图中获得
+#define VOL_PARM		0.18 	//根据电压计算adc的参数，从原理图中获得
 #define ADC_CALC(vol)	(int)(vol*VOL_PARM*4096/3.3)  //adc的计算
 
 
@@ -86,7 +86,7 @@ typedef enum
 	#define CHARGE_VOLTAGE_RESTART    CHARGING_MAXVOL-30  			//充满电之后如果电压回落到该电压则重新充电
 	
 	//充满条件	
-	#define CHARGING_CURRENT_STOP		0.01*BAT_CAP	//电流小于0.01C则充满
+	#define CHARGING_CURRENT_STOP		0.02*BAT_CAP	//电流小于0.01C则充满
 	
 #endif
 

@@ -270,6 +270,8 @@ void charging_print(void)
 		float current =charge_current_get();		
 		printf("charging state:%d",get_ui_manager()->charging_state());//charging_state
 		printf(" v:%d c:%d mA ",battery_voltage_average(),(int)current); 	
+		if (charge_current_get() < CHARGING_CURRENT_STOP)
+		printf("current_overflow_cnt %d \r\n",current_overflow_cnt);
 #ifdef NiMH		
 		printf(" t:%d",(int)(calc_battery_temperature()*100)); 	
 		printf(" r=%d",(int)(battery_temperature_get()*1000));
@@ -376,8 +378,7 @@ void play_charging_song(void)
       if( sys_runing_mode_get()==ROBOT_STATE_CHARGING) 
       {
         songplayer_play_id(SONG_ID_CHARGING_START, 0);
-		printf("begin_charging\r\n");
-        begin_charge_report = 1;
+				printf("begin_charging\r\n");
       }
     }       
   }
@@ -695,7 +696,8 @@ u8 charge_full_detect(void)
   }
   else
   {
-  	current_overflow_cnt = 0;
+  	if(current_overflow_cnt>0)
+			current_overflow_cnt--;
   }  
   if (current_overflow_cnt >= CHARGE_CURRENT_FULL_TIME)//锂电满充条件：充电电流小于截止电流持续1分钟
   {
